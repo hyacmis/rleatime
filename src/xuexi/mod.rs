@@ -5,4 +5,7 @@ pub mod struct_t;
 pub use struct_t::{Message, Rectangle, User};
 
 pub mod fanxin;
-pub use fanxin:: {fx_add,Point};
+pub use fanxin::{fx_add, Point};
+
+pub mod tz;
+pub use tz::*;
