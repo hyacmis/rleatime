@@ -9,3 +9,5 @@ pub use fanxin::{fx_add, Point};
 
 pub mod tz;
 pub use tz::*;
+
+pub mod ver_t;
