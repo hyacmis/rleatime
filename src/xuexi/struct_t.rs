@@ -20,7 +20,7 @@ pub struct Rectangle {
 impl Rectangle {
     pub fn new(width: u32, height: u32) -> Self { Self { width, height } }
     pub fn area(&self) -> u32 {
-        return self.width * self.height;
+        self.width * self.height
     }
 }
 
