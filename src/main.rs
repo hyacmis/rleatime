@@ -52,5 +52,6 @@ fn main() {
     // xuexi::draw2(&y);
 
     // xuexi::ver_t::v()
-    xuexi::map::mapping()
+    // xuexi::map::mapping()
+    xuexi::t2t::t()
 }
