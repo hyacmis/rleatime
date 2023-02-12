@@ -24,7 +24,7 @@ pub fn v() {
     }
     // 遍历时修改
     for i in &mut v {
-        *i += 10
+        *i += 10 // 解引用
     }
     // 同时获取数组的下标和值  注意v的权限
     for (i, v) in v.iter().enumerate() {

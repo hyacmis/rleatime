@@ -11,3 +11,4 @@ pub mod tz;
 pub use tz::*;
 
 pub mod ver_t;
+pub mod map;
