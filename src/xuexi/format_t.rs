@@ -1,3 +1,4 @@
+#[warn(dead_code)]
 pub fn if_func1() {
     let number = 3;
     if number < 5 {

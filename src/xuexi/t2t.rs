@@ -7,7 +7,7 @@ pub fn t() {
         // as 转换
         println!("Ten is less than one hundred.");
     }
-    println!("{},{},{}", a, b, c);
+    println!("{a},{b},{c}");
 
     let c_: i8 = b.try_into().unwrap();
 

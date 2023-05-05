@@ -1,4 +1,4 @@
-
+#[warn(dead_code)]
 pub fn test1() {
     let name = "Hello John";
     let slip = name.split_whitespace().collect::<Vec<_>>();

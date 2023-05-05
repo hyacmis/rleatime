@@ -9,7 +9,7 @@ pub fn mapping() {
     // 将行值的k v 转为 map的k v 需要手动指定 类型标注
     let teams_map: HashMap<_, _> = teams_list.into_iter().collect();
 
-    println!("{:?}", teams_map);
+    println!("{teams_map:?}");
 
     let name = String::from("Sunface");
     let age = 18;
@@ -25,10 +25,10 @@ pub fn mapping() {
 
     let team_name = String::from("Blue");
     let score: Option<&i32> = scores.get(&team_name);
-    println!("{:?}", score);
+    println!("{score:?}");
     // 遍历 map
     for (key, value) in &scores {
-        println!("{}: {}", key, value);
+        println!("{key}: {value}");
     }
 
     let mut scores = HashMap::new();
@@ -49,7 +49,7 @@ pub fn mapping() {
     // 查询Yellow对应的值，若不存在则插入新值
     let v = scores.entry("Yellow").or_insert(50);
     assert_eq!(*v, 5); // 已经存在，因此50没有插入
-    println!("{:?}", scores);
+    println!("{scores:?}");
 
     let text = "hello world wonderful world";
 
@@ -61,7 +61,7 @@ pub fn mapping() {
         // or_insert 返回了 &mut v 引用，因此可以通过该可变引用直接修改 map 中对应的值
         // 使用 count 引用时，需要先进行解引用 *count，否则会出现类型不匹配
     }
-    println!("{:?}", map);
+    println!("{map:?}");
 
     println!("{:?}", map.keys());
     println!("{:?}", map.values());
