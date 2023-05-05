@@ -55,5 +55,7 @@ fn main() {
     // xuexi::map::mapping()
     // xuexi::t2t::t()
 
-    xuexi::iter::main_iter()
+    // xuexi::iter::main_iter();
+    xuexi::format_t::type_fresm()
+
 }
