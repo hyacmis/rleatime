@@ -2,7 +2,6 @@
 mod testss {
     use crate::xuexi::r#box;
 
-
     #[test]
     fn test_foo() {
         let b = r#box::foo("world");
