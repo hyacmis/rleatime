@@ -1,3 +1,4 @@
+#![allow(dead_code)]
 pub struct User {
     pub active: bool,
     pub username: String,

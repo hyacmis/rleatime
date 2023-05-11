@@ -1,7 +1,8 @@
+#![allow(dead_code)]
 pub fn t() {
     let a = 3.1 as i8;
     let b = 100_i8 as i32;
-    let c = 'a' as u8; // 将字符'a'转换为整数，97
+    let c = b'a'; // 将字符'a'转换为整数，97
 
     if a < b as i8 {
         // as 转换

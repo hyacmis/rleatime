@@ -1,3 +1,4 @@
+#![allow(dead_code)]
 pub fn mapping() {
     use std::collections::HashMap;
 

@@ -1,3 +1,4 @@
+#![allow(dead_code)]
 pub fn main_iter() {
     let values = vec![1, 2, 3];
 

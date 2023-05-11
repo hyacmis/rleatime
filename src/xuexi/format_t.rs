@@ -1,5 +1,6 @@
+
 #![allow(unused_variables)] 
-#[warn(dead_code)]
+#![allow(dead_code)]
 pub fn if_func1() {
     let number = 3;
     if number < 5 {
@@ -12,7 +13,7 @@ pub fn if_func1() {
 pub fn type_fresm(){
     let a = 3.1 as i8;
     let b = 100_i8 as i32;
-    let c = 'a' as u8; // 将字符'a'转换为整数，97
+    let c = b'a'; // 将字符'a'转换为整数，97
 
     println!("{},{},{}",a,b,c);
 

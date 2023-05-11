@@ -1,3 +1,4 @@
+#![allow(dead_code)]
 pub struct Point<T> {
     pub x: T,
     pub y: T,

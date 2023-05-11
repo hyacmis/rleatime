@@ -1,3 +1,4 @@
+#![allow(dead_code)]
 pub fn v() {
     let mut v = vec![1];
     // 添加
