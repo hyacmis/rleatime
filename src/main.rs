@@ -18,7 +18,6 @@ fn main() {
     //
     // println!("add i32: {}", xuexi::fx_add(a.x,a.y));
     // println!("add f64: {}", xuexi::fx_add(b.x,b.y));
-
     // let post = xuexi::Post {
     //     title: "Rust语言简介".to_string(),
     //     author: "Sunface".to_string(),
@@ -50,17 +49,10 @@ fn main() {
     //
     // xuexi::draw2(&x);
     // xuexi::draw2(&y);
-
     // xuexi::ver_t::v()
     // xuexi::map::mapping()
     // xuexi::t2t::t()
-
     // xuexi::iter::main_iter();
     // xuexi::format_t::type_fresm()
-    
     // let mut text: Vec<&str> = vec!["1", "2", "3", "4", "5"];
-
-    test::test_2::test_text2();
-    // test::test_2::test_text3();
-
 }
