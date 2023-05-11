@@ -56,6 +56,11 @@ fn main() {
     // xuexi::t2t::t()
 
     // xuexi::iter::main_iter();
-    xuexi::format_t::type_fresm()
+    // xuexi::format_t::type_fresm()
+    
+    // let mut text: Vec<&str> = vec!["1", "2", "3", "4", "5"];
+
+    test::test_2::test_text2();
+    // test::test_2::test_text3();
 
 }

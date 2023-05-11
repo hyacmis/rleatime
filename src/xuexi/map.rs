@@ -51,19 +51,4 @@ pub fn mapping() {
     assert_eq!(*v, 5); // 已经存在，因此50没有插入
     println!("{scores:?}");
 
-    let text = "hello world wonderful world";
-
-    let mut map = HashMap::new();
-    // 根据空格来切分字符串(英文单词都是通过空格切分)
-    for i in text.split_whitespace() {
-        let count = map.entry(i).or_insert(0);
-        *count += 1;
-        // or_insert 返回了 &mut v 引用，因此可以通过该可变引用直接修改 map 中对应的值
-        // 使用 count 引用时，需要先进行解引用 *count，否则会出现类型不匹配
-    }
-    println!("{map:?}");
-
-    println!("{:?}", map.keys());
-    println!("{:?}", map.values());
-
 }
