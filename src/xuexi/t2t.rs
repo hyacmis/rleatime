@@ -13,6 +13,6 @@ pub fn t() {
     let c_: i8 = b.try_into().unwrap();
 
     if a < c_ {
-      println!("{a}<{c_}");
+        println!("{a}<{c_}");
     }
 }

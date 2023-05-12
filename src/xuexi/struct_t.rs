@@ -7,11 +7,15 @@ pub struct User {
 }
 
 impl User {
-    pub fn new(active: bool, username: String, email: String, sign_in_count: u64) -> Self { 
-        Self { active, username, email, sign_in_count } 
+    pub fn new(active: bool, username: String, email: String, sign_in_count: u64) -> Self {
+        Self {
+            active,
+            username,
+            email,
+            sign_in_count,
+        }
     }
 }
-
 
 pub struct Rectangle {
     pub width: u32,
@@ -19,12 +23,13 @@ pub struct Rectangle {
 }
 
 impl Rectangle {
-    pub fn new(width: u32, height: u32) -> Self { Self { width, height } }
+    pub fn new(width: u32, height: u32) -> Self {
+        Self { width, height }
+    }
     pub fn area(&self) -> u32 {
         self.width * self.height
     }
 }
-
 
 pub enum Message {
     Quit,

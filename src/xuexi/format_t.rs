@@ -1,5 +1,4 @@
-
-#![allow(unused_variables)] 
+#![allow(unused_variables)]
 #![allow(dead_code)]
 pub fn if_func1() {
     let number = 3;
@@ -10,12 +9,12 @@ pub fn if_func1() {
     }
 }
 
-pub fn type_fresm(){
+pub fn type_fresm() {
     let a = 3.1 as i8;
     let b = 100_i8 as i32;
     let c = b'a'; // 将字符'a'转换为整数，97
 
-    println!("{},{},{}",a,b,c);
+    println!("{},{},{}", a, b, c);
 
     let mut values: [i32; 2] = [1, 2];
     let p1: *mut i32 = values.as_mut_ptr();
@@ -25,5 +24,5 @@ pub fn type_fresm(){
     unsafe {
         *p2 += 1;
     }
-    println!("{} {}",  values[1], 2);
+    println!("{} {}", values[1], 2);
 }

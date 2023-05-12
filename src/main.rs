@@ -1,5 +1,4 @@
 mod test;
 mod xuexi;
 
-fn main() {
-}
+fn main() {}

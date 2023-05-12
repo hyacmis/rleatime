@@ -51,5 +51,4 @@ pub fn mapping() {
     let v = scores.entry("Yellow").or_insert(50);
     assert_eq!(*v, 5); // 已经存在，因此50没有插入
     println!("{scores:?}");
-
 }
