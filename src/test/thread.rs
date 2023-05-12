@@ -33,4 +33,39 @@ mod testss {
     fn test_fn6() {
         bingfa::thread_fn6()
     }
+
+    #[test]
+    fn test_sync1() {
+        bingfa::sync1()
+    }
+
+    #[test]
+    fn test_sync2() {
+        bingfa::sync2()
+    }
+
+    #[test]
+    fn test_sync4() {
+        bingfa::sync4()
+    }
+    #[test]
+    fn test_sync5() {
+        bingfa::sync5()
+    }
+    #[test]
+    fn test_sync6() {
+        bingfa::sync6();
+        println!("********************************");
+        bingfa::sync7();
+    }
+
+    #[test]
+    fn test_channel_ohter() {
+        bingfa::channel_ohter();
+    }
+
+    #[test]
+    fn test_sync8() {
+        bingfa::sync8()
+    }
 }
