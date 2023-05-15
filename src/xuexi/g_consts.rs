@@ -63,7 +63,7 @@ pub fn fn_c4() {
             b: "B".to_string(),
         });
 
-        Some(Box::leak(c))//Box::leak方法，它可以将一个变量从内存中泄漏
+        Some(Box::leak(c)) //Box::leak方法，它可以将一个变量从内存中泄漏
     }
 
     unsafe {

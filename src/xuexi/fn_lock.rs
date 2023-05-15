@@ -1,5 +1,8 @@
 #![allow(dead_code)]
-use std::{sync::{Mutex, Arc}, thread};
+use std::{
+    sync::{Arc, Mutex},
+    thread,
+};
 
 pub(crate) fn lock1() {
     // 使用`Mutex`结构体的关联函数创建新的互斥锁实例

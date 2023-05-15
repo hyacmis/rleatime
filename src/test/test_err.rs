@@ -154,7 +154,7 @@ mod tests {
 
         let s = Some("abcde");
         let n: Option<&str> = None;
-    
+
         let o: Result<&str, &str> = Ok("abcde");
         let e: Result<&str, &str> = Err(ERR_DEFAULT);
 
@@ -164,7 +164,7 @@ mod tests {
 
         let n: Option<&str> = None;
         let fn_err_message = || "error message";
-    
+
         let o: Result<&str, &str> = Ok("abcde");
         let e: Result<&str, &str> = Err("error message");
         //ok_or_else 接收一个闭包作为 Err 参数:

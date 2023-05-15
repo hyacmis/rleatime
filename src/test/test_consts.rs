@@ -16,5 +16,4 @@ mod tests {
     fn test_fn4() {
         g_consts::fn_c4();
     }
-    
 }
