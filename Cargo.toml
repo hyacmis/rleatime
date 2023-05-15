@@ -7,3 +7,7 @@ edition = "2021"
 
 [dependencies]
 futures = "0.3.28"
+
+# standard crate data is left out
+[dev-dependencies]
+pretty_assertions = "1"

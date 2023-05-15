@@ -1,6 +1,7 @@
 #[cfg(test)]
-mod tests {
+mod tests_test {
     use crate::xuexi::err;
+    use pretty_assertions::assert_eq; // 该包仅能用于测试
 
     #[test]
     fn test_fn1() {
@@ -176,5 +177,10 @@ mod tests {
     fn test_fn7() {
         let err = err::main();
         eprintln!("{:#?}", err);
+    }
+
+    #[test]
+    fn test_fn8() {
+        assert_eq!(3, 3)
     }
 }
