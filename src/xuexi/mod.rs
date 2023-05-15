@@ -14,3 +14,4 @@ pub mod t2t;
 pub mod ver_t;
 pub mod fn_lock;
 pub mod g_consts;
+pub mod err;
