@@ -16,8 +16,8 @@ async fn learn_song() -> Song {
 
 async fn sing_song(song: Song) {
     println!(
-        "给大家献上一首{}的{} ~ {}",
-        song.author, song.name, "你存在我深深的脑海里~ ~"
+        "给大家献上一首{}的{} ~ 你存在我深深的脑海里~ ~",
+        song.author, song.name
     );
 }
 
