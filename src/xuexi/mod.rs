@@ -12,3 +12,4 @@ pub mod iter;
 pub mod map;
 pub mod t2t;
 pub mod ver_t;
+pub mod fn_lock;
