@@ -1,16 +1,3 @@
-// pub fn test_dny_text(vec_list: &mut Vec<&str>) {
-//     for i in vec_list {
-//         // 将引用字符串转换为整数字符串，再 +1
-//         let mut s: i8 = i.to_string().parse::<i8>().unwrap();
-//         s += 1;s
-//         println!("{}", s);
-
-//         // 替换原有的值
-//         let s1: String = format!("{s}");
-//         *i = s1.as_str();
-//     }
-//     println!("{:?}", vec_list);
-// }
 #[cfg(test)]
 mod testss {
     #[test]
@@ -50,5 +37,85 @@ mod testss {
             *i = v;
         }
         assert_eq!(vec_list, vec!["", "", "", "", ""]);
+    }
+    #[test]
+    fn test_dny_text() {
+        let mut vec_list = vec![
+            String::from("1"),
+            String::from("2"),
+            String::from("3"),
+            String::from("4"),
+            String::from("5"),
+            String::from("6"),
+            String::from("7"),
+            String::from("8"),
+            String::from("9"),
+        ];
+        println!("{vec_list:?}");
+        for i in vec_list.iter_mut() {
+            // 将引用字符串转换为整数字符串，再 +1
+            let s: i8 = i.parse::<i8>().unwrap() + 1;
+
+            // 替换原有的值
+            *i = format!("{s}");
+        }
+        println!("{:?}", vec_list);
+
+        /*
+            解引用 需要存在引用才能解引用
+            在拥有所有权的时候遍历,不需要解引用 可直接修改元素本身
+        */
+        // for mut i in vec_list{
+        //     // 将引用字符串转换为整数字符串，再 +1
+        //     let s: i8 = i.parse::<i8>().unwrap() + 1;
+        //     i = format!("{s}");
+        //     println!("{:?}", i);
+        //     // 替换原有的值
+        //     // *i = format!("{s}");
+        // }
+    }
+    #[test]
+    fn test_dny_text_2() {
+        let mut vec_list = vec![
+            String::from("1"),
+            String::from("2"),
+            String::from("3"),
+            String::from("4"),
+            String::from("5"),
+            String::from("6"),
+            String::from("7"),
+            String::from("8"),
+            String::from("9"),
+        ];
+        println!("{vec_list:?}");
+        for i in &mut vec_list {
+            // 将引用字符串转换为整数字符串，再 +1
+            let s: i8 = i.to_string().parse::<i8>().unwrap() + 1;
+
+            // 替换原有的值
+            *i = format!("{s}");
+        }
+        println!("{:?}", vec_list);
+    }
+
+    #[test]
+    fn test_dny_text_3() {
+        let mut vec_list = vec![
+            String::from("1"),
+            String::from("2"),
+            String::from("3"),
+            String::from("4"),
+            String::from("5"),
+            String::from("6"),
+            String::from("7"),
+            String::from("8"),
+            String::from("9"),
+        ];
+        println!("{vec_list:?}");
+        for i in &mut vec_list {
+            // 替换原有的值
+            *i = format!("arr_{i}");
+        }
+        println!("{:?}", vec_list);
     }
 }
