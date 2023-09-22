@@ -1,6 +1,6 @@
 #[cfg(test)]
 mod tests {
-    use crate::xuexi::r#async;
+    use crate::xuexi::gaoji::r#async;
 
     #[test]
     fn test_fn1() {

@@ -1,6 +1,6 @@
 #[cfg(test)]
 mod tests_test {
-    use crate::xuexi::err;
+    use crate::xuexi::jinjie::err;
     use pretty_assertions::assert_eq; // 该包仅能用于测试
 
     #[test]

@@ -1,32 +1,33 @@
 #[cfg(test)]
 mod testss {
-    use crate::xuexi::bingfa;
+    use crate::xuexi::gaoji::bingfa;
+    use crate::xuexi::gaoji::xianchen;
 
     #[test]
     fn test_fn() {
-        bingfa::thread_fn()
+        xianchen::thread_fn()
     }
 
     #[test]
     fn test_fn1() {
-        bingfa::thread_fn1()
+        xianchen::thread_fn1()
     }
     #[test]
     fn test_fn2() {
-        bingfa::thread_fn2()
+        xianchen::thread_fn2()
     }
     #[test]
     fn test_fn3() {
-        bingfa::thread_fn3()
+        xianchen::thread_fn3()
     }
     #[test]
     fn test_fn4() {
-        bingfa::thread_fn4()
+        xianchen::thread_fn4()
     }
 
     #[test]
     fn test_fn5() {
-        bingfa::thread_fn5()
+        xianchen::thread_fn5()
     }
 
     #[test]

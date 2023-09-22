@@ -1,6 +1,6 @@
 #[cfg(test)]
 mod tests {
-    use crate::xuexi::g_consts;
+    use crate::xuexi::jinjie::g_consts;
 
     #[test]
     fn name() {
