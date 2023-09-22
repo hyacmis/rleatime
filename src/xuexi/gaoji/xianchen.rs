@@ -1,3 +1,5 @@
+#![allow(dead_code)]
+
 use std::cell::RefCell;
 use std::sync::{Arc, Barrier, Condvar, Mutex};
 use std::thread;
