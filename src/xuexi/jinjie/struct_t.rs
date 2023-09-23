@@ -8,12 +8,7 @@ pub struct User {
 
 impl User {
     pub fn new(active: bool, username: String, email: String, sign_in_count: u64) -> Self {
-        Self {
-            active,
-            username,
-            email,
-            sign_in_count,
-        }
+        Self { active, username, email, sign_in_count }
     }
 }
 

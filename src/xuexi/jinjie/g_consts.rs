@@ -42,9 +42,7 @@ pub fn fn_c3() {
 
     impl Factory {
         fn new() -> Self {
-            Self {
-                factory_id: generate_id(),
-            }
+            Self { factory_id: generate_id() }
         }
     }
 }
@@ -58,10 +56,7 @@ pub fn fn_c4() {
     static mut CONFIG: Option<&mut Config> = None;
 
     fn init() -> Option<&'static mut Config> {
-        let c = Box::new(Config {
-            a: "A".to_string(),
-            b: "B".to_string(),
-        });
+        let c = Box::new(Config { a: "A".to_string(), b: "B".to_string() });
 
         Some(Box::leak(c)) //Box::leak方法，它可以将一个变量从内存中泄漏
     }
