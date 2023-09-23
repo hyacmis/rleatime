@@ -55,10 +55,7 @@ fn insert_sort(vec: &mut Vec<i32>) {
         let mut j = i;
         while j > 0 {
             if vec[j] < vec[j - 1] {
-                // 交换值
-                let temp = vec[j];
-                vec[j] = vec[j - 1];
-                vec[j - 1] = temp;
+                vec.swap(j, j - 1);
             }
             j -= 1;
         }
