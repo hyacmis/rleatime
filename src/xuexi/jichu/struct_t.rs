@@ -12,6 +12,19 @@ impl User {
     }
 }
 
+#[test]
+fn test_user() {
+    let user = User::new(true, String::from("John"), String::from("someone@example.com"), 100);
+    assert_eq!(user.active, true);
+    assert_eq!(user.username, String::from("John"));
+    assert_eq!(user.email, String::from("someone@example.com"));
+    assert_eq!(user.sign_in_count, 100);
+
+    let user1 =
+        User { email: String::from("someone@example.com"), username: String::from("iris"), ..user };
+    assert_eq!(user1.email, String::from("someone@example.com"))
+}
+
 pub struct Rectangle {
     pub width: u32,
     pub height: u32,
