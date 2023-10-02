@@ -1,3 +1,4 @@
+#![allow(dead_code)]
 #[derive(PartialEq, Debug)]
 enum IpAddress {
     V4(u8, u8, u8, u8),
