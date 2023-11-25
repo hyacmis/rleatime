@@ -1,4 +1,3 @@
-mod test;
 mod xuexi;
 
 mod demo;
