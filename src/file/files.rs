@@ -15,7 +15,7 @@ fn read_file(file_path: &String) -> Vec<String> {
 
 #[test]
 fn test_read_file() {
-    let path = "src/xuexi/jinjie/test_txt.txt".to_string();
+    let path = "src/file/test_txt.txt".to_string();
     let lines = read_file(&path);
     let expected_lines = [
         "max_width = 100                   # 设置最大行宽为 100 个字符",
@@ -43,7 +43,7 @@ fn write_file(mode: WriteMode, path: &str, data: &str) -> Result<(), Error> {
 
 #[test]
 fn test_write_file() {
-    let path = "src/xuexi/jinjie/test_txt.txt".to_string();
+    let path = "src/file/test_txt.txt".to_string();
     let txt = "被我删除了啦".to_string();
 
     let _ = write_file(WriteMode::Overwrite, &path, &txt);

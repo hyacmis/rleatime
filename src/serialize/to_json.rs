@@ -1,5 +1,4 @@
 use serde::{Deserialize, Serialize};
-use serde_json;
 
 #[derive(Serialize)]
 struct Animal {
@@ -28,10 +27,7 @@ struct Person {
 
 #[test]
 fn person_to_json() {
-    let mut pp = Vec::new();
-    pp.push("hello world".to_string());
-    pp.push("perfcode.com".to_string());
-
+    let pp = vec!["hello world".to_string(), "perfcode.com".to_string()];
     let p = Person {
         name: "ho".to_string(),
         age: 18,

@@ -1,5 +1,4 @@
 use serde::{Deserialize, Serialize};
-use serde_json::json;
 
 #[derive(Serialize, Deserialize)]
 struct Person {
@@ -33,6 +32,7 @@ fn person_to_struct() {
 
 #[test]
 fn to_struct_hong() {
+    use serde_json::json;
     //json!宏来非常自然的构建serde_json::Value对象
     let info = json!(
         {
@@ -44,5 +44,5 @@ fn to_struct_hong() {
                 ]
         }
     );
-    println!("{}", info.to_string())
+    println!("{}", info)
 }
