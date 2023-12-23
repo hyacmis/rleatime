@@ -1,20 +1,23 @@
 #![allow(unused)]
 
-use std::time::Duration;
-
-use futures::executor::block_on;
-
+#[derive(Debug)]
 struct Song {
     author: String,
     name: String,
 }
 
 async fn learn_song() -> Song {
-    Song { author: "曲婉婷".to_string(), name: String::from("《我的歌声里》") }
+    Song {
+        author: "曲婉婷".to_string(),
+        name: String::from("《我的歌声里》"),
+    }
 }
 
 async fn sing_song(song: Song) {
-    println!("给大家献上一首{}的{} ~ 你存在我深深的脑海里~ ~", song.author, song.name);
+    format!(
+        "给大家献上一首{}的{} ~ 你存在我深深的脑海里~ ~",
+        song.author, song.name
+    );
 }
 
 async fn dance() {
@@ -26,7 +29,8 @@ async fn learn_and_sing() {
     let song = learn_song().await;
 
     // 唱歌必须要在学歌之后
-    sing_song(song).await;
+    let a = sing_song(song).await;
+    println!("{:?}", a);
 }
 
 async fn async_main() {
@@ -40,6 +44,9 @@ async fn async_main() {
     futures::join!(f1, f2);
 }
 
-pub(crate) fn main() {
+#[test]
+fn test_async() {
+    use futures::executor::block_on;
+
     block_on(async_main());
 }

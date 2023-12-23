@@ -4,39 +4,31 @@ use std::cell::RefCell;
 use std::sync::{Arc, Barrier, Condvar, Mutex};
 use std::thread;
 use std::time::Duration;
-pub(crate) fn thread_fn() {
-    thread::spawn(|| {
+
+/// 最基础的多线程执行方式
+fn thread_base() {
+    let handle = thread::spawn(|| {
+        // 内部使用闭包执行
         for i in 1..10 {
             println!("hi number {} from the spawned thread!", i);
             thread::sleep(Duration::from_millis(1));
         }
     });
+    // 如果不添加此语句 会导致 handel 线程在主线程结束后终止程序,无法输出完整的数字
+    // handle.join().unwrap(); //可以让当前线程阻塞，直到它等待的子线程的结束
 
     for i in 1..5 {
         println!("hi number {} from the main thread!", i);
         thread::sleep(Duration::from_millis(1));
     }
+
+    handle.join().unwrap(); // 放置在主线程下方,会让两个线程交替输出
 }
 
-pub(crate) fn thread_fn1() {
-    let handle = thread::spawn(|| {
-        for i in 1..5 {
-            println!("hi number {} from the spawned thread!", i);
-            thread::sleep(Duration::from_millis(1));
-        }
-    });
-
-    handle.join().unwrap(); //handle.join，可以让当前线程阻塞
-
-    for i in 1..5 {
-        println!("hi number {} from the main thread!", i);
-        thread::sleep(Duration::from_millis(1));
-    }
-}
-
-pub(crate) fn thread_fn2() {
+///move 将所有权从一个线程转移到另外一个线程
+fn thread_move() {
     let v = vec![1, 2, 3];
-    //move 来将所有权从一个线程转移到另外一个线程
+    //线程的启动时间点和结束时间点是不确定的
     let handle = thread::spawn(move || {
         println!("Here's a vector: {:?}", v);
     });
@@ -45,17 +37,17 @@ pub(crate) fn thread_fn2() {
     // println!("{:?}",v);
 }
 
-// 线程屏障(Barrier) 让多个线程都执行到某个点后，才继续一起往后执行
-pub(crate) fn thread_fn3() {
+/// 线程屏障(Barrier) 让多个线程都执行到某个点后，才继续一起往后执行
+fn thread_barrier() {
     let mut handles = Vec::with_capacity(6);
     let barrier = Arc::new(Barrier::new(6));
 
-    for _ in 0..6 {
+    for i in 0..6 {
         let b = barrier.clone();
         handles.push(thread::spawn(move || {
-            println!("before wait");
-            b.wait();
-            println!("after wait");
+            println!("before wait {}", i);
+            b.wait(); // 再次等待上面的打印语句全部输出后在打印下面的语句
+            println!("after wait {}", i);
         }));
     }
 
@@ -63,10 +55,11 @@ pub(crate) fn thread_fn3() {
         handle.join().unwrap();
     }
 }
-//使用 thread_local 宏可以初始化线程局部变量，然后在线程内部使用该变量的 with 方法获取变量值：
-pub(crate) fn thread_fn4() {
-    thread_local!(static FOO: RefCell<u32> = RefCell::new(1));
 
+/// 使用 thread_local 宏可以初始化线程局部变量，然后在线程内部使用该变量的 with 方法获取变量值：
+fn thread_local() {
+    thread_local!(static FOO: RefCell<u32> = RefCell::new(1));
+    // 线程局部变量 每个新的线程访问它时，都会使用它的初始值作为开始，各个线程中的 FOO 值彼此互不干扰
     FOO.with(|f| {
         assert_eq!(*f.borrow(), 1);
         *f.borrow_mut() = 2;
@@ -90,27 +83,53 @@ pub(crate) fn thread_fn4() {
 }
 
 //条件变量(Condition Variables)经常和 Mutex 一起使用，可以让线程挂起，直到某个条件发生后再继续执行
-pub(crate) fn thread_fn5() {
+fn thread_mutex() {
     let pair = Arc::new((Mutex::new(false), Condvar::new()));
     let pair2 = pair.clone();
 
     thread::spawn(move || {
         let (lock, cvar) = &*pair2;
-        let mut started = lock.lock().unwrap();
+        let mut started = lock.lock().unwrap(); //子线程获取到锁
         println!("changing started");
         *started = true;
-        cvar.notify_one();
+        cvar.notify_one(); //通知主线程
     });
-
-    dbg!(" starting ");
 
     let (lock, cvar) = &*pair;
     let mut started = lock.lock().unwrap();
     while !*started {
-        started = cvar.wait(started).unwrap(); //此处挂起等待子线程,并释放了锁
+        started = cvar.wait(started).unwrap(); //此处挂起等待子线程,并释放了锁started
     }
 
     println!("started changed");
+}
 
-    dbg!(" ending... ");
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn test_thread_base() {
+        thread_base() // 每次打印结果顺序不一样 ==> 不能依赖线程的执行顺序
+    }
+
+    #[test]
+    fn test_thread_move() {
+        thread_move()
+    }
+
+    #[test]
+    fn test_thread_barrier() {
+        thread_barrier()
+    }
+
+    #[test]
+    fn test_thread_local() {
+        thread_local()
+    }
+
+    #[test]
+    fn test_thread_mutex() {
+        thread_mutex()
+    }
 }

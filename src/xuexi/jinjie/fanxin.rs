@@ -19,7 +19,10 @@ impl<T: Add<Output = T>> Add for Point<T> {
     type Output = Self;
 
     fn add(self, other: Self) -> Self {
-        Self { x: self.x + other.x, y: self.y + other.y }
+        Self {
+            x: self.x + other.x,
+            y: self.y + other.y,
+        }
     }
 }
 
@@ -27,7 +30,10 @@ impl<T: Sub<Output = T>> Sub for Point<T> {
     type Output = Self;
 
     fn sub(self, other: Self) -> Self {
-        Self { x: self.x - other.x, y: self.y - other.y }
+        Self {
+            x: self.x - other.x,
+            y: self.y - other.y,
+        }
     }
 }
 

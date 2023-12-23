@@ -27,7 +27,10 @@ fn test_ip_address() {
     assert_eq!(ipv4, IpAddress::V4(127, 0, 0, 1));
 
     let ipv6 = IpAddress::V6(String::from("fe80::7436:aba9:c779:b39d%12"));
-    assert_eq!(ipv6, IpAddress::V6(String::from("fe80::7436:aba9:c779:b39d%12")));
+    assert_eq!(
+        ipv6,
+        IpAddress::V6(String::from("fe80::7436:aba9:c779:b39d%12"))
+    );
 
     ipv4.cases();
     ipv6.cases();

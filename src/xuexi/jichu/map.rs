@@ -2,8 +2,11 @@
 pub fn mapping() {
     use std::collections::HashMap;
 
-    let teams_list =
-        vec![("中国队".to_string(), 100), ("美国队".to_string(), 10), ("日本队".to_string(), 50)];
+    let teams_list = vec![
+        ("中国队".to_string(), 100),
+        ("美国队".to_string(), 10),
+        ("日本队".to_string(), 50),
+    ];
     // 将行值的k v 转为 map的k v 需要手动指定 类型标注
     let teams_map: HashMap<_, _> = teams_list.into_iter().collect();
 

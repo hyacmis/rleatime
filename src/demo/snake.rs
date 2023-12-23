@@ -25,7 +25,10 @@ struct Snake {
 
 impl Snake {
     pub fn new() -> Self {
-        Self { head: Coord::new(), body: Vec::new() }
+        Self {
+            head: Coord::new(),
+            body: Vec::new(),
+        }
     }
     pub fn walk(&mut self, new_coord: Coord) {
         self.head = new_coord;

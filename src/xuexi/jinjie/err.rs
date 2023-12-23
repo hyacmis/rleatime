@@ -25,7 +25,11 @@ impl fmt::Display for AppError {
 // 实现 From<io::Error> 意味着我们可以将 io::Error 错误转换成自定义的 AppError 错误
 impl From<io::Error> for AppError {
     fn from(error: io::Error) -> Self {
-        AppError { kind: String::from("io"), message: error.to_string(), code: 500 }
+        AppError {
+            kind: String::from("io"),
+            message: error.to_string(),
+            code: 500,
+        }
     }
 }
 // 手动指定打印类型
@@ -41,7 +45,11 @@ impl fmt::Debug for AppError {
 
 // 一个示例函数用于产生 AppError 错误
 fn produce_error() -> Result<(), AppError> {
-    Err(AppError { code: 404, message: String::from("Page not found"), kind: "main".to_string() })
+    Err(AppError {
+        code: 404,
+        message: String::from("Page not found"),
+        kind: "main".to_string(),
+    })
 }
 
 pub fn main() -> Result<(), AppError> {
