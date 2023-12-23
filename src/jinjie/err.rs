@@ -21,6 +21,7 @@ impl fmt::Display for AppError {
         write!(f, "{}", err_msg)
     }
 }
+
 // 为 AppError 实现 std::convert::From 特征，由于 From 包含在 std::prelude 中，因此可以直接简化引入。
 // 实现 From<io::Error> 意味着我们可以将 io::Error 错误转换成自定义的 AppError 错误
 impl From<io::Error> for AppError {
@@ -32,6 +33,7 @@ impl From<io::Error> for AppError {
         }
     }
 }
+
 // 手动指定打印类型
 impl fmt::Debug for AppError {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {

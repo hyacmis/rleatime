@@ -25,7 +25,7 @@ fn test_user() {
         String::from("someone@example.com"),
         100,
     );
-    assert_eq!(user.active, true);
+    assert!(user.active);
     assert_eq!(user.username, String::from("John"));
     assert_eq!(user.email, String::from("someone@example.com"));
     assert_eq!(user.sign_in_count, 100);
@@ -49,19 +49,5 @@ impl Rectangle {
     }
     pub fn area(&self) -> u32 {
         self.width * self.height
-    }
-}
-
-pub enum Message {
-    Quit,
-    Move { x: i32, y: i32 },
-    Write(String),
-    ChangeColor(i32, i32, i32),
-}
-
-impl Message {
-    pub fn call(&self) {
-        // 在这里定义方法体
-        println!("sadasdas")
     }
 }

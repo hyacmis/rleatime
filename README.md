@@ -1,11 +1,34 @@
 # runtime
 
-要么就用clion，装一个rust分析器，一如既往地享受jetbraina家丝滑体验
+学习 `rust` 语法的私有项目  
+使用 `RustRover` IDE
 
-（重点！千万不要用ws或者idea）
+# 已完成:
 
-要么用vscode，装三个插件
+- [x] 基础语法
+    - [x] `Vec`
+    - [x] `HashMap`
+    - [x] `struct` 结构体与impl
+    - [x] `Enum` 枚举
+    - [x] Type to Type 类型转换
+    - [x] iter 各种遍历操作
+- [x] 进阶语法
+    - [x] `static` 全局静态变量
+    - [x] err 错误
+    - [x] `T` 泛型
+    - [x] `trait` 特征
+- [x] 高级语法
+    - [x] `thread` 多线程
+    - [x] thread of channel 线程通道
+    - [x] thread of lock 线程锁
+    - [ ] thread of atomic 原子操作,内存顺序
+    - [ ] thread Send 和 Sync 线程安全
+    - [x] `Box` 智能指针
 
-1. rust analyzer（社区秒杀官方系列）
-2. rust and friend （一个插件集合，包括调试的lldb，format，snippet，balabla～
-3. flowistry （阅读源代码神奇，高亮有关数据所有权的代码行）
+- [x] 其他
+    - [x] `file` 文件读写
+    - [x] `serde` 序列化包 ==> struct to json
+
+- [x] demo
+    - [x] snake [贪吃蛇项目](https://github.com/coufxr/snake.git)
+    - [x] `slint` [betape](https://github.com/coufxr/betape.git)

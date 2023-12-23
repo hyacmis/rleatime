@@ -1,19 +1,21 @@
 #![allow(dead_code)]
-pub fn if_func1() {
-    let number = 3;
-    if number < 5 {
-        println!("条件为 true");
-    } else {
-        println!("条件为 false");
-    }
-}
 
-pub fn type_fresm() {
+fn t_as() {
     let a = 3.1 as i8;
     let b = 100_i8 as i32;
     let c = b'a'; // 将字符'a'转换为整数，97
 
-    println!("{},{},{}", a, b, c);
+    if a < b as i8 {
+        // as 转换
+        println!("Ten is less than one hundred.");
+    }
+    println!("{a},{b},{c}");
+
+    let c_: i8 = b.try_into().unwrap();
+
+    if a < c_ {
+        println!("{a}<{c_}");
+    }
 
     let mut values: [i32; 2] = [1, 2];
     let p1: *mut i32 = values.as_mut_ptr();
@@ -24,4 +26,13 @@ pub fn type_fresm() {
         *p2 += 1;
     }
     println!("{} {}", values[1], 2);
+}
+
+fn if_func1() {
+    let number = 3;
+    if number < 5 {
+        println!("条件为 true");
+    } else {
+        println!("条件为 false");
+    }
 }
