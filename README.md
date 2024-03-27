@@ -21,7 +21,7 @@
     - [x] `thread` 多线程
     - [x] thread of channel 线程通道
     - [x] thread of lock 线程锁
-    - [ ] thread of atomic 原子操作,内存顺序
+    - [x] thread of atomic 原子操作,内存顺序
     - [ ] thread Send 和 Sync 线程安全
     - [x] `Box` 智能指针
 
