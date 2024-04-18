@@ -15,7 +15,6 @@ fn test_to_json() {
     let json = serde_json::to_string(&animal).unwrap();
     let res = r#"{"name":"Tom","age":3}"#.to_string();
     assert_eq!(res, json);
-    println!("{}", json); // {"name":"Tom","age":3}
 }
 
 #[derive(Serialize, Deserialize)]
@@ -40,5 +39,4 @@ fn person_to_json() {
         r#"{"name":"ho","age":18,"pet_phrase":["hello world","perfcode.com"]}"#,
         json
     );
-    println!("{}", json);
 }

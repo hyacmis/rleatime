@@ -1,30 +1,28 @@
 #![allow(dead_code)]
-pub fn foo(x: &str) -> String {
-    "Hello, ".to_string() + x
-}
-pub fn fn1() {
-    // 在栈上创建一个长度为1000的数组
-    let arr = [0; 1000];
-    // 将arr所有权转移arr1，由于 `arr` 分配在栈上，因此这里实际上是直接重新深拷贝了一份数据
-    let arr1 = arr;
 
-    // arr 和 arr1 都拥有各自的栈上数组，因此不会报错
-    println!("{:?}", arr.len());
-    println!("{:?}", arr1.len());
+#[cfg(test)]
+mod test_box {
+    #[test]
+    fn test_box_ownership() {
+        // 在堆上创建一个长度为1000的数组，然后使用一个智能指针指向它
+        let arr = Box::new([0; 1000]);
+        // 将堆上数组的所有权转移给 arr1，由于数据在堆上，因此仅仅拷贝了智能指针的结构体，底层数据并没有被拷贝
+        // let arr1 = arr;
+        // 由于 arr 不再拥有底层数组的所有权，因此下面代码将报错
+        // assert_eq!(arr.len(), 1000);
 
-    // 在堆上创建一个长度为1000的数组，然后使用一个智能指针指向它
-    let arr = Box::new([0; 1000]);
-    // 将堆上数组的所有权转移给 arr1，由于数据在堆上，因此仅仅拷贝了智能指针的结构体，底层数据并没有被拷贝
-    // 所有权顺利转移给 arr1，arr 不再拥有所有权
-    let arr1 = arr; //在此实现拷贝才能将底层数据转移 .clone();
-    println!("{:?}", arr1.len());
-    // 由于 arr 不再拥有底层数组的所有权，因此下面代码将报错
-    // println!("{:?}", arr.len());
-}
+        // 使用clone() 才能将底层数据转移
+        let arr1 = arr.clone();
 
-pub fn fn2() -> String {
-    let x = Box::new("1".to_string());
-    let y = *x + "1";
-    println!("{:?}", y);
-    y
+        assert_eq!(arr.len(), 1000);
+
+        assert_eq!(arr1.len(), 1000);
+    }
+
+    #[test]
+    fn test_value() {
+        let x = Box::new("1".to_string());
+        let y = *x + "1";
+        assert_eq!(y, "11".to_string());
+    }
 }

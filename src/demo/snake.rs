@@ -38,9 +38,7 @@ impl Snake {
 #[test]
 fn case_rng() {
     let mut a = Snake::new();
-    println!("{:#?}", a);
 
     let b = Coord::new();
     a.walk(b);
-    println!("{:#?}", a);
 }

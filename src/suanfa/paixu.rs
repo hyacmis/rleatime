@@ -19,16 +19,9 @@ fn select_sort(vec: &mut Vec<i32>) {
         (vec[i], vec[min]) = (vec[min], vec[i]); // 利用解包交换值
     }
 }
-#[test]
-fn test_select_sort() {
-    let mut vec = vec![2, 5, 27, 7, 13, 89, 21, 32, 64, 3];
-    select_sort(&mut vec);
-    assert_eq!(vec, vec![2, 3, 5, 7, 13, 21, 27, 32, 64, 89]);
-    dbg!("{:#?}", vec);
-}
 
 //冒泡排序
-fn maopao_sort(vec: &mut Vec<i32>) {
+fn mao_pao_sort(vec: &mut [i32]) {
     // 排序次数
     for i in 0..vec.len() - 1 {
         //实际比较
@@ -41,16 +34,8 @@ fn maopao_sort(vec: &mut Vec<i32>) {
     }
 }
 
-#[test]
-fn test_maopao_sort() {
-    let mut vec = vec![2, 5, 27, 7, 13, 89, 21, 32, 64, 3];
-    maopao_sort(&mut vec);
-    assert_eq!(vec, vec![2, 3, 5, 7, 13, 21, 27, 32, 64, 89]);
-    dbg!("{:#?}", vec);
-}
-
 //插入排序
-fn insert_sort(vec: &mut Vec<i32>) {
+fn insert_sort(vec: &mut [i32]) {
     for i in 0..vec.len() {
         let mut j = i;
         while j > 0 {
@@ -61,10 +46,33 @@ fn insert_sort(vec: &mut Vec<i32>) {
         }
     }
 }
-#[test]
-fn test_insert_sort() {
-    let mut vec = vec![2, 5, 27, 7, 13, 89, 21, 32, 64, 3];
-    insert_sort(&mut vec);
-    assert_eq!(vec, vec![2, 3, 5, 7, 13, 21, 27, 32, 64, 89]);
-    dbg!("{:#?}", vec);
+
+#[cfg(test)]
+mod test_pai_xu {
+    use super::*;
+
+    fn get_arr() -> Vec<i32> {
+        vec![2, 5, 27, 7, 13, 89, 21, 32, 64, 3]
+    }
+
+    #[test]
+    fn test_select_sort() {
+        let mut vec = get_arr();
+        select_sort(&mut vec);
+        assert_eq!(vec, vec![2, 3, 5, 7, 13, 21, 27, 32, 64, 89]);
+    }
+
+    #[test]
+    fn test_mao_pao_sort() {
+        let mut vec = get_arr();
+        mao_pao_sort(&mut vec);
+        assert_eq!(vec, vec![2, 3, 5, 7, 13, 21, 27, 32, 64, 89]);
+    }
+
+    #[test]
+    fn test_insert_sort() {
+        let mut vec = get_arr();
+        insert_sort(&mut vec);
+        assert_eq!(vec, vec![2, 3, 5, 7, 13, 21, 27, 32, 64, 89]);
+    }
 }
