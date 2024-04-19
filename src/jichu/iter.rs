@@ -17,7 +17,7 @@ fn iter_life(list: Vec<i32>) -> Vec<i32> {
 }
 
 #[cfg(test)]
-mod test_vec {
+mod test_iter {
     use super::*;
 
     #[test]
@@ -33,19 +33,5 @@ mod test_vec {
         let name = "Hello John";
         let slip = name.split_whitespace().collect::<Vec<&str>>();
         assert_eq!(slip, vec!["Hello", "John"]);
-    }
-
-    #[test]
-    fn test_for_push() {
-        // for 循环中动态添加值
-        let mut result = Vec::new();
-        for i in 0..5 {
-            result.push(format!("string{i}"));
-        }
-        result[2] = "string_new".to_string();
-        assert_eq!(
-            result,
-            vec!["string0", "string1", "string_new", "string3", "string4"]
-        );
     }
 }

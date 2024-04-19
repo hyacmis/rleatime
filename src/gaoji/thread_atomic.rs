@@ -20,8 +20,8 @@ fn add_n_times(n: u64) -> JoinHandle<()> {
 #[cfg(test)]
 mod test_atomic {
     use std::hint;
-    use std::sync::Arc;
     use std::sync::atomic::{AtomicUsize, Ordering};
+    use std::sync::Arc;
 
     use super::*;
 

@@ -1,7 +1,7 @@
 #![allow(dead_code)]
 
 // 选择排序
-fn select_sort(vec: &mut Vec<i32>) {
+fn select_sort(vec: &mut [i32]) {
     // 外循环需小于数组
     for i in 0..vec.len() - 1 {
         let mut min = i;

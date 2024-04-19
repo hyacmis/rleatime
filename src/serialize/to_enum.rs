@@ -35,7 +35,7 @@ mod test_enum_serialize {
 
 // 定义一个带有整数值的枚举
 #[derive(FromRepr, Debug, PartialEq)]
-#[warn(dead_code)]
+#[allow(dead_code)]
 enum SexType {
     Male = 1,
     Female = 2,

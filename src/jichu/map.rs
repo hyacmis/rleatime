@@ -13,9 +13,13 @@ mod test_map {
         let dict: HashMap<String, i32> = teams_list.into_iter().collect();
 
         // 创建一个包含预期键的 HashSet
-        let expected_keys: HashSet<String> = ["日本队".to_string(), "中国队".to_string(), "美国队".to_string()]
-            .into_iter()
-            .collect();
+        let expected_keys: HashSet<String> = [
+            "日本队".to_string(),
+            "中国队".to_string(),
+            "美国队".to_string(),
+        ]
+        .into_iter()
+        .collect();
 
         let keys_set = dict.keys().cloned().collect::<HashSet<_>>();
 
