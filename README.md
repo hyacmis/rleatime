@@ -1,6 +1,6 @@
 # runtime
 
-学习 `rust` 语法的私有项目  
+学习 `rust` 语法的私有项目
 使用 `RustRover` IDE
 
 # 已完成:

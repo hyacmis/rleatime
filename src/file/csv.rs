@@ -44,7 +44,7 @@ mod test_csv {
 
         for result in records.records() {
             let record = result.unwrap();
-            // 通过handel 获取到列名对应的值
+            // 通过handle 获取到列名对应的值
             let col = handle.iter().position(|x| x == "year").unwrap();
             let value = record.get(col).unwrap().to_owned();
             arr.push(value);

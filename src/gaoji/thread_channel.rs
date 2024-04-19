@@ -139,7 +139,7 @@ mod test_channel {
         tx.send(Fruit::Apple(43)).unwrap();
 
         for _ in 0..3 {
-            //recv 会一直等待chanel传递的值
+            //recv 会一直等待channel传递的值
             match rx.recv().unwrap() {
                 Fruit::Apple(count) => println!("received {} apples", count),
                 Fruit::Orange(flavor) => println!("received {} oranges", flavor),

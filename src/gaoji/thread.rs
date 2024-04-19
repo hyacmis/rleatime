@@ -16,7 +16,7 @@ mod test_thread {
                 thread::sleep(Duration::from_millis(1));
             }
         });
-        // 如果不添加此语句 会导致 handel 线程在主线程结束后终止程序,无法输出完整的数字
+        // 如果不添加此语句 会导致 handle 线程在主线程结束后终止程序,无法输出完整的数字
         // handle.join().unwrap(); //可以让当前线程阻塞，直到它等待的子线程的结束
 
         for i in 1..5 {
