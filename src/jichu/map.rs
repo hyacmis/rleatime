@@ -40,7 +40,7 @@ mod test_map {
     }
 
     #[test]
-    pub fn test_install() {
+    fn test_install() {
         let mut scores = HashMap::new();
 
         scores.insert("Blue", 10);
@@ -59,5 +59,35 @@ mod test_map {
         // 查询Yellow对应的值，若不存在则插入新值
         let v = scores.entry("Yellow").or_insert(50);
         assert_eq!(*v, 5); // 已经存在，因此50没有插入
+    }
+
+    /// 查询某个 key 对应的值，若不存在则插入新值，若存在则对已有的值进行更新
+    #[test]
+    fn test_get_key_value() {
+        let text = "hello world wonderful world";
+
+        let mut dict = HashMap::new();
+        // 根据空格来切分字符串(英文单词都是通过空格切分)
+        for word in text.split_whitespace() {
+            // 通过插入默认值（如果为空）来确保值位于条目中， 并返回对条目中值的可变引用
+            let count = dict.entry(word).or_insert(0);
+            *count += 1;
+        }
+        assert_eq!(
+            dict,
+            HashMap::from([("hello", 1), ("world", 2), ("wonderful", 1)])
+        );
+    }
+
+    #[test]
+    fn test_contains_key() {
+        let mut dict = HashMap::new();
+        dict.insert("a", 1);
+        dict.insert("b", 2);
+        dict.insert("c", 3);
+        // 判断 key 是否在 map 中
+        let f = dict.contains_key("d");
+
+        assert!(!f);
     }
 }
