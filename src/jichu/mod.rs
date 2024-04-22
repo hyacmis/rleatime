@@ -2,5 +2,5 @@ mod r#enum;
 mod iter;
 mod map;
 mod r#struct;
-mod t2t;
+mod type_to_type;
 mod vec_for;
