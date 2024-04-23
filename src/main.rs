@@ -6,6 +6,7 @@ mod gaoji;
 mod jichu;
 mod jinjie;
 mod logger;
+mod request;
 mod serialize;
 
 fn main() {}

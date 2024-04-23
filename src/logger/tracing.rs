@@ -17,8 +17,9 @@ mod test_tracing {
     }
 
     #[test]
-    fn span() {
-        tracing_subscriber::registry().with(fmt::layer()).init();
+    fn test_span() {
+        // 这里为什么不能在注册了?
+        // tracing_subscriber::registry().with(fmt::layer()).init();
 
         let span = span!(Level::TRACE, "my_span");
 
