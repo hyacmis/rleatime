@@ -89,7 +89,7 @@ mod test_reqwest {
     async fn test_get_params() {
         let resp = get_params().await.unwrap();
 
-        assert!(resp.args.get("key").is_some());
+        assert!(resp.args.contains_key("key"));
         assert_eq!(resp.url, "https://httpbin.org/get?key=value");
     }
 
@@ -98,7 +98,7 @@ mod test_reqwest {
     async fn test_post_params() {
         let resp = post_params().await.unwrap();
 
-        assert!(resp.args.get("key").is_none());
+        assert!(!resp.args.contains_key("key"));
         assert_eq!(resp.url, "https://httpbin.org/post");
         assert_eq!(resp.json["body"], "json");
     }
