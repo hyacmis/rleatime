@@ -24,6 +24,8 @@ jobs:
         with:
           fetch-depth: 0
           submodules: recursive
+      - name: Set Up Timezone
+        run: echo "TZ=Asia/Shanghai" >> $GITHUB_ENV
       - name: Install Rust
         run: rustup toolchain install stable --component llvm-tools-preview
       - name: Install cargo-llvm-cov
