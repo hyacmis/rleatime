@@ -1,8 +1,7 @@
 // 基本语法
-mod gaoji;
-mod jichu;
-mod jinjie;
-
+mod advance;
+mod basis;
+mod senior;
 // 基础库
 mod file;
 mod logger;
@@ -15,6 +14,6 @@ mod settings;
 
 // 其他实现
 mod demo;
-mod suanfa;
+mod leetcode;
 
 fn main() {}
