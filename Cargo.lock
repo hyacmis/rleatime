@@ -458,6 +458,14 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "4271d37baee1b8c7e4b708028c57d816cf9d2434acb33a549475f78c181f6253"
 
 [[package]]
+name = "grammar"
+version = "0.1.0"
+dependencies = [
+ "futures",
+ "tokio",
+]
+
+[[package]]
 name = "h2"
 version = "0.4.4"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -676,6 +684,10 @@ name = "lazy_static"
 version = "1.4.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "e2abad23fbc42b3700f2f279844dc832adb2b2eb069b2df918f455c4e18cc646"
+
+[[package]]
+name = "leetcode"
+version = "0.1.0"
 
 [[package]]
 name = "libc"
@@ -1130,23 +1142,15 @@ dependencies = [
 name = "runtime"
 version = "0.1.0"
 dependencies = [
- "chrono",
- "config",
  "csv",
- "dotenvy",
- "futures",
+ "grammar",
+ "leetcode",
  "log",
  "pretty_assertions",
  "rand",
- "reqwest",
  "serde",
  "serde_json",
- "serde_repr",
- "strum",
- "strum_macros",
- "tokio",
- "tracing",
- "tracing-subscriber",
+ "third_party_crates",
 ]
 
 [[package]]
@@ -1428,6 +1432,24 @@ dependencies = [
  "fastrand",
  "rustix",
  "windows-sys 0.52.0",
+]
+
+[[package]]
+name = "third_party_crates"
+version = "0.1.0"
+dependencies = [
+ "chrono",
+ "config",
+ "dotenvy",
+ "reqwest",
+ "serde",
+ "serde_json",
+ "serde_repr",
+ "strum",
+ "strum_macros",
+ "tokio",
+ "tracing",
+ "tracing-subscriber",
 ]
 
 [[package]]
