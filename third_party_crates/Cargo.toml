@@ -1,5 +1,5 @@
 [package]
-name = "third_party_lib"
+name = "third_party_crates"
 version = "0.1.0"
 edition = "2021"
 description = "学习第三方库"

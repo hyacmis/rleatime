@@ -1150,7 +1150,7 @@ dependencies = [
  "rand",
  "serde",
  "serde_json",
- "third_party_lib",
+ "third_party_crates",
 ]
 
 [[package]]
@@ -1435,7 +1435,7 @@ dependencies = [
 ]
 
 [[package]]
-name = "third_party_lib"
+name = "third_party_crates"
 version = "0.1.0"
 dependencies = [
  "chrono",

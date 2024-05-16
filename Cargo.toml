@@ -25,7 +25,7 @@ serde_json = "1.0.116"
 # workspace lib path
 grammar = { path = "grammar" }
 leetcode = { path = "leetcode" }
-third_party_lib = { path = "third_party_crates" }
+third_party_crates = { path = "third_party_crates" }
 
 # standard crate data is left out
 [dev-dependencies]
