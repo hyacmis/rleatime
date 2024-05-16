@@ -48,7 +48,7 @@
 ## 配置管理
 
 - [x] [`dotenvy`](https://github.com/allan2/dotenvy)  `dotenv` 的分叉 此库从 .env 文件加载环境变量
-- [ ] [`config`](https://github.com/mehcode/config-rs/tree/master)  用于 Rust 应用程序的分层配置系统
+- [x] [`config`](https://github.com/mehcode/config-rs/tree/master)  用于 Rust 应用程序的分层配置系统
 
 ## demo
 

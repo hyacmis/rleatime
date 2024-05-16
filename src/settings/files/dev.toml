@@ -1,0 +1,11 @@
+[app]
+host = "127.0.0.1"
+port = "8080"
+log_level = "DEBUG"
+
+[database]
+host = "127.0.0.2"
+port = "3307"
+username = "root"
+password = "root"
+dbname = "app_dev"
