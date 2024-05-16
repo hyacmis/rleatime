@@ -1,7 +1,3 @@
-// 基本语法
-mod advance;
-mod basis;
-mod senior;
 // 基础库
 mod file;
 mod logger;
