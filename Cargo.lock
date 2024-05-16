@@ -686,6 +686,10 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "e2abad23fbc42b3700f2f279844dc832adb2b2eb069b2df918f455c4e18cc646"
 
 [[package]]
+name = "leetcode"
+version = "0.1.0"
+
+[[package]]
 name = "libc"
 version = "0.2.154"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -1138,24 +1142,15 @@ dependencies = [
 name = "runtime"
 version = "0.1.0"
 dependencies = [
- "chrono",
- "config",
  "csv",
- "dotenvy",
- "futures",
  "grammar",
+ "leetcode",
  "log",
  "pretty_assertions",
  "rand",
- "reqwest",
  "serde",
  "serde_json",
- "serde_repr",
- "strum",
- "strum_macros",
- "tokio",
- "tracing",
- "tracing-subscriber",
+ "third_party_lib",
 ]
 
 [[package]]
@@ -1437,6 +1432,24 @@ dependencies = [
  "fastrand",
  "rustix",
  "windows-sys 0.52.0",
+]
+
+[[package]]
+name = "third_party_lib"
+version = "0.1.0"
+dependencies = [
+ "chrono",
+ "config",
+ "dotenvy",
+ "reqwest",
+ "serde",
+ "serde_json",
+ "serde_repr",
+ "strum",
+ "strum_macros",
+ "tokio",
+ "tracing",
+ "tracing-subscriber",
 ]
 
 [[package]]

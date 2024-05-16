@@ -1,7 +1,6 @@
 #![allow(dead_code)]
-use std::env;
 
-use dotenvy::dotenv;
+use std::env;
 
 // 使用 trait 来优化代码
 trait FormEnv {
@@ -17,9 +16,9 @@ struct Server {
 
 impl FormEnv for Server {
     fn form_env() -> Self {
-        let host = env::var("HOST").expect("HOST is not set in .env.local file");
-        let port = env::var("PORT").expect("PORT is not set in .env.local file");
-        let log_level = env::var("LOG_LEVEL").expect("logger_level is not set in .env.local file");
+        let host = env::var("HOST").expect("HOST is not set in .env file");
+        let port = env::var("PORT").expect("PORT is not set in .env file");
+        let log_level = env::var("LOG_LEVEL").expect("logger_level is not set in .env file");
 
         Self {
             host,
@@ -40,14 +39,13 @@ struct Db {
 
 impl FormEnv for Db {
     fn form_env() -> Self {
-        let host = env::var("DATABASE_HOST").expect("DATABASE_HOST is not set in .env.local file");
-        let port = env::var("DATABASE_PORT").expect("DATABASE_PORT is not set in .env.local file");
+        let host = env::var("DATABASE_HOST").expect("DATABASE_HOST is not set in .env file");
+        let port = env::var("DATABASE_PORT").expect("DATABASE_PORT is not set in .env file");
         let username =
-            env::var("DATABASE_USERNAME").expect("DATABASE_USERNAME is not set in .env.local file");
+            env::var("DATABASE_USERNAME").expect("DATABASE_USERNAME is not set in .env file");
         let password =
-            env::var("DATABASE_PASSWORD").expect("DATABASE_PASSWORD is not set in .env.local file");
-        let dbname =
-            env::var("DATABASE_DBNAME").expect("DATABASE_DBNAME is not set in .env.local file");
+            env::var("DATABASE_PASSWORD").expect("DATABASE_PASSWORD is not set in .env file");
+        let dbname = env::var("DATABASE_DBNAME").expect("DATABASE_DBNAME is not set in .env file");
 
         Self {
             host,
@@ -67,7 +65,10 @@ struct Configs {
 
 impl FormEnv for Configs {
     fn form_env() -> Self {
-        dotenv().ok();
+        // 这是从最外层的project中寻找.env文件
+        // dotenv().ok();
+        // 从指定位置出寻找, 好像不能越过当前crates
+        dotenvy::from_path("src/settings/files/.env").ok();
         let server = Server::form_env();
         let db = Db::form_env();
 
@@ -92,7 +93,7 @@ mod text_dotenvy {
 
     #[test]
     fn test_configs_server() {
-        set_env();
+        // set_env();
         let config = Configs::form_env();
         assert_eq!(config.server.host, "127.0.0.1");
         assert_eq!(config.server.port, 8000);
@@ -100,7 +101,7 @@ mod text_dotenvy {
     }
     #[test]
     fn test_configs_db() {
-        set_env();
+        // set_env();
         let config = Configs::form_env();
         assert_eq!(config.db.host, "127.0.0.1");
         assert_eq!(config.db.port, 3306);

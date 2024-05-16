@@ -1,7 +1,5 @@
-#![allow(dead_code)]
-
-// 选择排序
-fn select_sort(vec: &mut [i32]) {
+/// 选择排序
+pub fn select_sort(vec: &mut [i32]) {
     // 外循环需小于数组
     for i in 0..vec.len() - 1 {
         let mut min = i;
@@ -20,8 +18,8 @@ fn select_sort(vec: &mut [i32]) {
     }
 }
 
-//冒泡排序
-fn mao_pao_sort(vec: &mut [i32]) {
+/// 冒泡排序
+pub fn mao_pao_sort(vec: &mut [i32]) {
     // 排序次数
     for i in 0..vec.len() - 1 {
         //实际比较
@@ -34,8 +32,8 @@ fn mao_pao_sort(vec: &mut [i32]) {
     }
 }
 
-//插入排序
-fn insert_sort(vec: &mut [i32]) {
+/// 插入排序
+pub fn insert_sort(vec: &mut [i32]) {
     for i in 0..vec.len() {
         let mut j = i;
         while j > 0 {

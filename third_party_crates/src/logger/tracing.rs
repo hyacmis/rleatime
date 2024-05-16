@@ -9,7 +9,7 @@ mod test_tracing {
         tracing_subscriber::registry().with(fmt::layer()).init();
 
         // 调用 `log` 包的 `info!`
-        log::info!("Hello world");
+        // log::info!("Hello world");
 
         let foo = 42;
         // 调用 `tracing` 包的 `info!`
