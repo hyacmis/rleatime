@@ -1,31 +1,29 @@
-#![allow(dead_code)]
-
 use std::env;
 
 use config::{Config, File};
 use serde::{Deserialize, Serialize};
 
 #[derive(Debug, Serialize, Deserialize)]
-struct App {
-    host: String,
-    port: String,
-    echo: bool,
-    log_level: String,
+pub struct App {
+    pub host: String,
+    pub port: String,
+    pub echo: bool,
+    pub log_level: String,
 }
 
 #[derive(Debug, Serialize, Deserialize)]
-struct Database {
-    host: String,
-    port: String,
-    username: String,
-    password: String,
-    dbname: String,
+pub struct Database {
+    pub host: String,
+    pub port: String,
+    pub username: String,
+    pub password: String,
+    pub dbname: String,
 }
 
 #[derive(Debug, Serialize, Deserialize)]
-struct Configs {
-    app: App,
-    database: Database,
+pub struct Configs {
+    pub app: App,
+    pub database: Database,
 }
 
 impl Configs {
@@ -41,7 +39,7 @@ impl Configs {
                 File::with_name(&format!("src/settings/files/{}.toml", run_mode)).required(false),
             )
             // 加载来自环境变量的配置, 以"app"为开头
-            // Eg.. `APP_DEBUG=1 ./target/app` would set the `debug` key
+            // E.g. `APP_DEBUG=1 ./target/app` would set the `debug` key
             // .add_source(Environment::with_prefix("app"))
             // You may also programmatically change settings
             // .set_override("database.url", "postgres://")?
@@ -49,6 +47,12 @@ impl Configs {
             .unwrap_or_else(|e| panic!("配置文件加载失败：{}", e));
 
         cfg.try_deserialize().unwrap()
+    }
+}
+
+impl Default for Configs {
+    fn default() -> Self {
+        Self::new()
     }
 }
 
