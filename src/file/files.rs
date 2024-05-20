@@ -4,7 +4,7 @@ use std::fs::{File, OpenOptions};
 use std::io::{BufRead, BufReader, Error, Write};
 
 // 按行读取文件 并返回字符串
-fn read_file(file_path: &String) -> Vec<String> {
+pub fn read_file(file_path: &String) -> Vec<String> {
     let f = File::open(file_path).expect("未找到文件,请确认文件地址");
     let bf = BufReader::new(f);
     // 处理每一行中的错误, 将其转为String
@@ -13,12 +13,12 @@ fn read_file(file_path: &String) -> Vec<String> {
     lines
 }
 
-enum WriteMode {
+pub enum WriteMode {
     Append,
     Overwrite,
 }
 
-fn write_file(mode: WriteMode, path: &str, data: &str) -> Result<(), Error> {
+pub fn write_file(mode: WriteMode, path: &str, data: &str) -> Result<(), Error> {
     let mut file = match mode {
         WriteMode::Append => OpenOptions::new().append(true).open(path)?,
         WriteMode::Overwrite => File::create(path)?,
@@ -30,6 +30,44 @@ fn write_file(mode: WriteMode, path: &str, data: &str) -> Result<(), Error> {
 #[cfg(test)]
 mod test_file {
     use super::*;
+    use std::fs;
+    use std::path::Path;
+
+    #[test]
+    fn test_create_dir() {
+        fs::create_dir("src/file/.tmp").unwrap();
+        let is_path = Path::new("src/file/.tmp").exists();
+        assert!(is_path);
+    }
+
+    #[test]
+    fn test_delete_dir() {
+        let path = "src/file/.tmp";
+        if Path::new(path).exists() {
+            // 删除空文件夹
+            fs::remove_dir(path).unwrap();
+            // 删除不是空的文件夹
+            // fs::remove_dir_all(path).unwrap();
+        }
+        assert!(!Path::new(path).exists());
+    }
+
+    #[test]
+    fn test_for_dir() {
+        let file_names: Vec<&str> = vec![
+            "files.rs",
+            "csv.rs",
+            "test_csv.csv",
+            "test_txt.txt",
+            "paths.rs",
+            "mod.rs",
+        ];
+        let dir = fs::read_dir("src/file").unwrap();
+        for (idx, f) in dir.enumerate() {
+            let f = f.unwrap();
+            assert_eq!(f.file_name().to_str().unwrap(), file_names[idx]);
+        }
+    }
 
     #[test]
     fn test_read_file() {
