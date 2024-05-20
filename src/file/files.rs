@@ -31,6 +31,7 @@ pub fn write_file(mode: WriteMode, path: &str, data: &str) -> Result<(), Error> 
 mod test_file {
     use super::*;
     use std::fs;
+    use std::io::{Read, Seek, SeekFrom};
     use std::path::Path;
 
     #[test]
@@ -67,6 +68,61 @@ mod test_file {
             let f = f.unwrap();
             assert_eq!(f.file_name().to_str().unwrap(), file_names[idx]);
         }
+    }
+    #[test]
+    /// 与下面的测试函数一起适用与web开发中的小文件读取
+    fn test_read_to_string() {
+        // 一次性读取文件的全部内容
+        let text = fs::read_to_string("src/file/test_txt.txt").unwrap();
+        assert_eq!(text, "h\ne\nl\nl\no\n,\nw\no\nr\nl\nd\n");
+    }
+
+    #[test]
+    fn test_read_to_u8() {
+        // 一次性读取 u8 类型集合
+        let text = fs::read("src/file/test_txt.txt").unwrap();
+        assert_eq!(
+            text,
+            vec![
+                104, 10, 101, 10, 108, 10, 108, 10, 111, 10, 44, 10, 119, 10, 111, 10, 114, 10,
+                108, 10, 100, 10,
+            ]
+        );
+    }
+
+    #[test]
+    /// 流式读取
+    fn test_read_stream() {
+        let mut file = File::open("src/file/test_txt.txt").unwrap();
+        // 声明一个缓冲区
+        let mut buffer = vec![0; 6];
+        file.read_exact(&mut buffer).unwrap();
+        assert_eq!(buffer, vec![104, 10, 101, 10, 108, 10]);
+
+        file.read_exact(&mut buffer).unwrap();
+        assert_eq!(buffer, vec![108, 10, 111, 10, 44, 10]);
+    }
+
+    #[test]
+    fn test_read_other() {
+        let mut file = File::open("src/file/test_txt.txt").unwrap();
+        // 第一种
+        // 将游标前移 10 个字节（游标的默认位置是 0）
+        file.seek(SeekFrom::Start(10)).unwrap();
+
+        // 将前 10 个字节之后的内容读取到 Buf 中
+        let mut buffer = String::new();
+        file.read_to_string(&mut buffer).unwrap();
+        assert_eq!(buffer, ",\nw\no\nr\nl\nd\n");
+
+        // 第二种
+        let file2 = File::open("src/file/test_txt.txt").unwrap();
+        // 限制读取长度最多为 5 字节
+        let mut handle = file2.take(6);
+        let mut buffer = vec![0; 5]; // 缓存需要小于等于限制长度, 不然会err
+
+        handle.read_exact(&mut buffer).unwrap();
+        assert_eq!(buffer, vec![104, 10, 101, 10, 108]);
     }
 
     #[test]
