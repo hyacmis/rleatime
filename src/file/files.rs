@@ -134,6 +134,44 @@ mod test_file {
     }
 
     #[test]
+    fn test_write_fs() {
+        // 一次性写入请谨慎使用！因为它会直接删除文件内容（无论文件多么大）。如果文件不存在就会创建文件
+        let path = "src/file/tmp.txt";
+
+        fs::write(path, "FROM RUST PROGRAM").unwrap();
+
+        assert!(Path::new(path).exists());
+        fs::remove_file(path).unwrap()
+    }
+
+    #[test]
+    fn test_write_create() {
+        let path = "src/file/tmp.txt";
+
+        let mut file = File::create(path).unwrap();
+        file.write_all(b"FROM RUST PROGRAM").unwrap();
+
+        assert_eq!(fs::read_to_string(path).unwrap(), "FROM RUST PROGRAM");
+
+        fs::remove_file(path).unwrap()
+    }
+
+    #[test]
+    fn test_write_append() {
+        let path = "src/file/tmp.txt";
+        let mut file = OpenOptions::new()
+            .create(true)
+            .append(true)
+            .open(path)
+            .unwrap();
+
+        file.write_all(b" APPEND WORD").unwrap();
+        file.write_all(b"\n apple").unwrap();
+        assert_eq!(fs::read_to_string(path).unwrap(), " APPEND WORD\n apple");
+        fs::remove_file(path).unwrap()
+    }
+
+    #[test]
     fn test_write_file() {
         let path = "src/file/test_txt.txt".to_string();
         let txt = "被我删除了啦".to_string();
