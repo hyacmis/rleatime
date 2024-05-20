@@ -1,2 +1,3 @@
-mod csv;
-mod files;
+pub mod csv;
+pub mod files;
+pub mod paths;
