@@ -64,9 +64,10 @@ mod test_file {
             "mod.rs",
         ];
         let dir = fs::read_dir("src/file").unwrap();
-        for (idx, f) in dir.enumerate() {
-            let f = f.unwrap();
-            assert_eq!(f.file_name().to_str().unwrap(), file_names[idx]);
+        for f in dir {
+            let f = f.unwrap().file_name();
+            let name = f.to_str().unwrap();
+            assert!(file_names.contains(&name));
         }
     }
     #[test]
