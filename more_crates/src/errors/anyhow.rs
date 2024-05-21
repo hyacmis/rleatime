@@ -22,7 +22,7 @@ pub fn read_file_anyhow_error(file_path: &str) -> Result<String> {
 // 通过#[derive(Debug)]注解实现std::fmt::Debug的trait
 #[derive(Debug)]
 pub struct CustomError {
-    err: ChildError,
+    pub err: ChildError,
 }
 
 // 实现Display的trait
@@ -42,7 +42,7 @@ impl std::error::Error for CustomError {
 
 // 子Error
 #[derive(Debug)]
-struct ChildError;
+pub struct ChildError;
 
 // 实现Display
 impl std::fmt::Display for ChildError {
