@@ -5,4 +5,4 @@ tab_spaces = 4
 # 设置换行策略
 use_small_heuristics = "Default"
 # 设置换行符风格，根据平台自动选择
-newline_style = "Auto"
+newline_style = "Unix"
