@@ -8,13 +8,13 @@ struct Person {
 }
 
 #[cfg(test)]
-mod test_json_to_struct {
-    use serde_json::Value;
+mod test_to_struct {
+    use serde_json::json;
 
-    use crate::serialize::to_struct::Person;
+    use super::*;
 
     #[test]
-    fn test_person_to_struct() {
+    fn test_from() {
         // 一个&str类型的JSON数据
         let data = r#"
         {
@@ -28,26 +28,24 @@ mod test_json_to_struct {
 
         // 转换成 Person 结构
         let p: Person = serde_json::from_str(data).unwrap();
+        let _p2 = serde_json::from_str::<Person>(data).unwrap();
 
         // 通过方括号建立索引来访问部分数据
         let p_str = format!(
-            "NAME: {}\nAGE: {}\n\t{}\n\t{}",
+            "NAME: {}; AGE: {}; pet_phrase: [{},{}]",
             p.name, p.age, p.pet_phrase[0], p.pet_phrase[1],
         );
         assert_eq!(
             p_str,
-            r#"NAME: James Bond
-AGE: 33
-	Bond, James Bond.
-	Shaken, not stirred."#
+            r#"NAME: James Bond; AGE: 33; pet_phrase: [Bond, James Bond.,Shaken, not stirred.]"#
         )
     }
 
     #[test]
-    fn test_hong() {
-        use serde_json::json;
-        //json!宏来非常自然的构建serde_json::Value对象
-        let info: Value = json!({
+    fn test_macros() {
+        // json!宏会将其转换为serde_json::Value对象
+        // 这会生成一个动态类型
+        let info = json!({
             "name": "哈哈",
             "age": 14,
             "pet_phrase":[
@@ -62,8 +60,8 @@ AGE: 33
             pet_phrase: vec!["汪汪.".to_string(), "喵喵.".to_string()],
         };
 
-        // 将 JSON 值解析为 Person 类型
-        let info_person: Person = serde_json::from_value(info.clone()).unwrap();
+        // 从Value对象准换为Person对象
+        let info_person: Person = serde_json::from_value(info).unwrap();
 
         assert_eq!(info_person, res)
     }
