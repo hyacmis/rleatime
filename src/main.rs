@@ -5,5 +5,6 @@ mod file;
 mod demo;
 mod log;
 mod std_time;
+mod tokenizer;
 
 fn main() {}
