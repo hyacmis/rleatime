@@ -18,9 +18,11 @@ fn flush_buf(tokens: &mut Vec<Token>, number_buf: &mut String) {
 }
 
 /// 分割字符串
-fn tokenization(expression: &str) -> Vec<Token> {
+pub fn tokenization(expression: &str) -> Vec<Token> {
     let mut tokens = Vec::new();
     let mut buf = String::new();
+    // 记录前一个字符
+    let mut prev_char: Option<char> = None;
 
     for c in expression.chars() {
         match c {
@@ -28,16 +30,21 @@ fn tokenization(expression: &str) -> Vec<Token> {
             '-' => {
                 // 需要判断负数, 规则:
                 // 1）若前一个字符为‘('，则必定为负号；
-                // 2）若前一个字符为')'或者数字，则必定为减号；
-                // 3）若前面一个字符为其他运算符，如*，/，则必定是负号；
-                // 4）若前面没有字符，即该字符为表达式的第一个字符，则必定是负号。
-                let t = tokens.last();
-                // 为负号
-                if !tokens.is_empty() || matches!(t, Some(Token::Op(_)) | Some(Token::Paren('('))) {
+                // 2）若前面一个字符为其他运算符，如*，/，则必定是负号；
+                // 3）若前一个字符为')'或者数字，则必定为减号；
+                // 4）若前面没有字符，即该字符为表达式的第一个字符，则必定是减号。
+
+                // 为减号
+                if prev_char.is_some() // 前一个字符存在
+                    && !matches!( // 前一个字符不为 运算符和`(` 即 前一个字符时数字和`)`
+                        prev_char,
+                        Some('+') | Some('-') | Some('*') | Some('/') | Some('(')
+                    )
+                {
                     flush_buf(&mut tokens, &mut buf);
                     tokens.push(Token::Op(c));
                 } else {
-                    // 为减号
+                    // 为负号 在数字前
                     buf.push(c);
                 }
             }
@@ -52,6 +59,7 @@ fn tokenization(expression: &str) -> Vec<Token> {
             }
             _ => {}
         }
+        prev_char = Some(c)
     }
     flush_buf(&mut tokens, &mut buf);
     tokens
@@ -129,7 +137,7 @@ mod test_tokenizer {
 
     #[test]
     fn test_token_nested_parentheses() {
-        let expression = "((1+2)*3-(4/2))";
+        let expression = "((1+2)*3-(-4/-2))";
         let res = tokenization(expression);
         assert_eq!(
             res,
@@ -144,9 +152,9 @@ mod test_tokenizer {
                 Token::Num(3.0),
                 Token::Op('-'),
                 Token::Paren('('),
-                Token::Num(4.0),
+                Token::Num(-4.0),
                 Token::Op('/'),
-                Token::Num(2.0),
+                Token::Num(-2.0),
                 Token::Paren(')'),
                 Token::Paren(')'),
             ]
@@ -162,13 +170,13 @@ mod test_tokenizer {
 
     #[test]
     fn test_token_parentheses_and_operators() {
-        let expression = "(1+2)*3/(4-2)";
+        let expression = "(-1+2)*3/(4-2)";
         let res = tokenization(expression);
         assert_eq!(
             res,
             vec![
                 Token::Paren('('),
-                Token::Num(1.0),
+                Token::Num(-1.0),
                 Token::Op('+'),
                 Token::Num(2.0),
                 Token::Paren(')'),
@@ -192,17 +200,34 @@ mod test_tokenizer {
             res,
             vec![
                 Token::Paren('('),
-                Token::Op('-'),
-                Token::Num(1.0),
+                Token::Num(-1.0),
                 Token::Op('+'),
                 Token::Num(2.0),
                 Token::Paren(')'),
                 Token::Op('*'),
                 Token::Paren('('),
-                Token::Op('-'),
-                Token::Num(3.0),
+                Token::Num(-3.0),
                 Token::Op('/'),
                 Token::Num(4.0),
+                Token::Paren(')'),
+            ]
+        )
+    }
+
+    #[test]
+    fn test_extra_parentheses() {
+        let expression = "-1+2*(-3)";
+        let res = tokenization(expression);
+
+        assert_eq!(
+            res,
+            vec![
+                Token::Num(-1.0),
+                Token::Op('+'),
+                Token::Num(2.0),
+                Token::Op('*'),
+                Token::Paren('('),
+                Token::Num(-3.0),
                 Token::Paren(')'),
             ]
         )
