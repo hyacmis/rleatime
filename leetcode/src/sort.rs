@@ -14,19 +14,19 @@ pub fn select_sort(vec: &mut [i32]) {
         if min == i {
             continue;
         }
-        (vec[i], vec[min]) = (vec[min], vec[i]); // 利用解包交换值
+        vec.swap(i, min);
     }
 }
 
 /// 冒泡排序
-pub fn mao_pao_sort(vec: &mut [i32]) {
+pub fn bubble_sort(vec: &mut [i32]) {
     // 排序次数
     for i in 0..vec.len() - 1 {
         //实际比较
         for j in 0..vec.len() - i - 1 {
             //判断当前值和下一位值的大小
             if vec[j] > vec[j + 1] {
-                (vec[j], vec[j + 1]) = (vec[j + 1], vec[j]);
+                vec.swap(j, j + 1);
             }
         }
     }
@@ -45,8 +45,41 @@ pub fn insert_sort(vec: &mut [i32]) {
     }
 }
 
+/// 快速排序
+pub fn quick_sort(data: &mut [i32]) {
+    quick_sort_helper(data, 1, data.len());
+}
+
+fn quick_sort_helper(data: &mut [i32], start: usize, end: usize) {
+    if start < end {
+        let left = partition(data, start, end);
+        if data[left] < data[start - 1] {
+            data.swap(left, start - 1);
+        }
+
+        quick_sort_helper(data, start, left);
+        quick_sort_helper(data, left + 1, end);
+    }
+}
+
+fn partition(data: &mut [i32], start: usize, end: usize) -> usize {
+    let mut left = start;
+    let mut right = end - 1;
+    while left < right {
+        while data[left] <= data[start - 1] && left < right {
+            left += 1;
+        }
+
+        while data[right] >= data[start - 1] && left < right {
+            right -= 1;
+        }
+        data.swap(left, right);
+    }
+    left
+}
+
 #[cfg(test)]
-mod test_pai_xu {
+mod test_sorts {
     use super::*;
 
     fn get_arr() -> Vec<i32> {
@@ -61,9 +94,9 @@ mod test_pai_xu {
     }
 
     #[test]
-    fn test_mao_pao_sort() {
+    fn test_bubble_sort() {
         let mut vec = get_arr();
-        mao_pao_sort(&mut vec);
+        bubble_sort(&mut vec);
         assert_eq!(vec, vec![2, 3, 5, 7, 13, 21, 27, 32, 64, 89]);
     }
 
@@ -71,6 +104,13 @@ mod test_pai_xu {
     fn test_insert_sort() {
         let mut vec = get_arr();
         insert_sort(&mut vec);
+        assert_eq!(vec, vec![2, 3, 5, 7, 13, 21, 27, 32, 64, 89]);
+    }
+
+    #[test]
+    fn test_quick_sort() {
+        let mut vec = get_arr();
+        quick_sort(&mut vec);
         assert_eq!(vec, vec![2, 3, 5, 7, 13, 21, 27, 32, 64, 89]);
     }
 }
