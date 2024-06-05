@@ -1,0 +1,12 @@
+[package]
+name = "download_cli"
+version = "0.1.0"
+edition = "2021"
+license = "MIT"
+
+[[bin]]
+name = "download-cli" # 二进制名称，通常与包名不同以区分
+path = "src/main.rs"
+
+[dependencies]
+clap = { version = "4.5.4", features = ["derive"] }

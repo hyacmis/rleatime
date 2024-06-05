@@ -14,6 +14,7 @@ members = [
     "leetcode",
     "more_crates",
     "snake",
+    "download_cli",
 ]
 
 [dependencies]
