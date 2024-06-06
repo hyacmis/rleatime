@@ -1,3 +1,6 @@
+mod download;
+
+use crate::download::download;
 use clap::Parser;
 
 #[derive(Debug, Parser)]
@@ -19,11 +22,10 @@ pub struct Args {
     url: String,
 }
 
-fn main() {
+#[tokio::main]
+async fn main() {
     let opts = Opts::parse();
     match opts.cmd {
-        SubCommand::Down(opts) => {
-            println!("Hello {}!", opts.url)
-        }
+        SubCommand::Down(opts) => download(&opts.url).await.unwrap(),
     }
 }
