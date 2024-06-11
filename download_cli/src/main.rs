@@ -1,7 +1,10 @@
-mod download;
-
-use crate::download::download;
 use clap::Parser;
+
+use crate::manager::DownloadManager;
+
+mod chunk;
+mod helper;
+mod manager;
 
 #[derive(Debug, Parser)]
 #[command(name = "download_cli", version, author, about, long_about = None)]
@@ -23,9 +26,16 @@ pub struct Args {
 }
 
 #[tokio::main]
-async fn main() {
+async fn main() -> Result<(), anyhow::Error> {
     let opts = Opts::parse();
     match opts.cmd {
-        SubCommand::Down(opts) => download(&opts.url).await.unwrap(),
+        SubCommand::Down(opts) => {
+            let manger = DownloadManager::new(&opts.url);
+
+            manger.execute().await?;
+
+            println!("Download completed successfully!");
+        }
     }
+    Ok(())
 }

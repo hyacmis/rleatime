@@ -28,8 +28,3 @@ rand = "0.8.5"
 log = "0.4.21"
 serde = { version = "1.0.203", features = ["derive"] }
 serde_json = "1.0.117"
-
-
-# standard crate data is left out
-[dev-dependencies]
-pretty_assertions = "1.4.0"

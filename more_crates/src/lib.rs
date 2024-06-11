@@ -1,3 +1,4 @@
+pub mod cui;
 pub mod datetime;
 pub mod errors;
 pub mod logger;
