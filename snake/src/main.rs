@@ -1,14 +1,16 @@
-#![allow(dead_code)]
-
-use super::draw::to_coord_u32;
-use super::game::Game;
+use crate::draw::to_coord_u32;
+use crate::game::Game;
 use piston_window::types::Color;
 use piston_window::*;
+
+mod draw;
+mod game;
+mod snakes;
 
 const BACK_COLOR: Color = [0.5, 0.5, 0.5, 1.0];
 
 /// url :https://eleftheriabatsou.hashnode.dev/tutorial-snake-game-in-rust-part-12
-pub fn run() {
+fn main() {
     let (width, height) = (30, 30);
 
     let mut window: PistonWindow =
