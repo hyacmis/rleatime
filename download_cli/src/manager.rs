@@ -1,4 +1,10 @@
-use std::{cmp::Reverse, collections::BinaryHeap, fs::File, io, io::Write, sync::Arc, sync::Mutex};
+use std::{
+    fs::{File, OpenOptions},
+    io,
+    io::{Seek, SeekFrom, Write},
+    sync::Arc,
+    sync::Mutex,
+};
 
 use futures::future::try_join_all;
 use indicatif::{MultiProgress, ProgressBar, ProgressStyle};
@@ -7,7 +13,6 @@ use tokio::{task, task::JoinHandle};
 use url::Url;
 
 use crate::chunk::TaskChunk;
-use crate::helper::{Handle, HeapSortWrapper, SortWrapper};
 
 #[derive(Clone)]
 pub struct DownloadManager {
@@ -64,12 +69,26 @@ impl DownloadManager {
         tasks
     }
 
-    /// 执行器
-    pub async fn execute_tasks(
+    fn create_empty_file_with_size(
         &self,
-        tasks: Vec<TaskChunk>,
-        queue: HeapSortWrapper,
-    ) -> Result<(), anyhow::Error> {
+        file_path: &str,
+        size_in_bytes: u64,
+    ) -> Result<File, anyhow::Error> {
+        // 创建文件
+        let mut file = OpenOptions::new()
+            .create(true)
+            .write(true)
+            .truncate(true)
+            .open(file_path)?;
+
+        // 直接写入零字节到文件以设定大小
+        let buffer = vec![0; size_in_bytes as usize];
+        file.write_all(&buffer)?;
+
+        Ok(file)
+    }
+    /// 执行器
+    pub async fn execute_tasks(&self, tasks: Vec<TaskChunk>) -> Result<(), anyhow::Error> {
         // TUI 的声明与显示配置
         let m = MultiProgress::new();
         let sty = ProgressStyle::default_bar()
@@ -79,9 +98,19 @@ impl DownloadManager {
 
         let mut handles: Vec<JoinHandle<Result<(), anyhow::Error>>> = vec![];
 
+        let self_ref = Arc::new(self.clone());
+
+        // 使用Arc和Mutex以便在多个线程间共享和同步文件句柄
+        let file_name = self.url.path().split('/').last().unwrap();
+
+        let file = self.create_empty_file_with_size(file_name, tasks.last().unwrap().end_byte)?;
+
+        let file = Arc::new(Mutex::new(file));
+
         for task in tasks {
             let url = self.url.clone();
-            let queue_clone = queue.clone();
+            let self_clone = self_ref.clone();
+            let file_clone = file.clone();
 
             let pb = m.add(ProgressBar::new(task.end_byte - task.start_byte));
             pb.set_style(sty.clone());
@@ -89,9 +118,9 @@ impl DownloadManager {
 
             let handle = task::spawn(async move {
                 let chunk = task.download(url, pb).await?;
-                // 使用二叉树结构进行保存
-                let wrapper = SortWrapper::new(task.id, chunk);
-                queue_clone.lock().unwrap().push(Reverse(wrapper));
+                self_clone
+                    .write_data_to_file(task.start_byte, chunk, file_clone)
+                    .await?;
                 Ok(())
             });
 
@@ -108,11 +137,15 @@ impl DownloadManager {
     }
 
     /// 将数据写入文件
-    async fn write_data_to_file(&self, chunk_data: Vec<u8>) -> Result<(), io::Error> {
-        let file_name = self.url.path().split('/').last().unwrap();
+    async fn write_data_to_file(
+        &self,
+        chunk_start: u64,
+        chunk_data: Vec<u8>,
+        file: Arc<Mutex<File>>,
+    ) -> Result<(), io::Error> {
+        let mut file = file.lock().unwrap();
 
-        let mut file = File::create(file_name)?;
-
+        file.seek(SeekFrom::Start(chunk_start))?;
         file.write_all(&chunk_data)?;
 
         Ok(())
@@ -122,12 +155,7 @@ impl DownloadManager {
         let content_length = self.get_content_length().await?;
         let tasks = self.create_chunk_tasks(content_length);
 
-        let queue: HeapSortWrapper = Arc::new(Mutex::new(BinaryHeap::new()));
-
-        self.execute_tasks(tasks, queue.clone()).await?;
-
-        let data = queue.handle()?;
-        self.write_data_to_file(data).await?;
+        self.execute_tasks(tasks).await?;
 
         Ok(())
     }

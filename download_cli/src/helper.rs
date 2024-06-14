@@ -1,9 +1,12 @@
+#![allow(dead_code)]
+
 use anyhow::Error;
 use std::cmp::Reverse;
 use std::collections::BinaryHeap;
 use std::sync::{Arc, Mutex};
 
-// 用于排序的数据块包装器
+/// 使用二叉树对线程下载的文件块进行排序
+/// 用于排序的数据块包装器
 #[derive(Eq, PartialEq, Debug)]
 pub struct SortWrapper {
     pub id: usize,
