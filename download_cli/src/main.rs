@@ -1,10 +1,12 @@
 use clap::Parser;
 
 use crate::manager::DownloadManager;
+use crate::manager_channel::ChannelManager;
 
 mod chunk;
 mod helper;
 mod manager;
+mod manager_channel;
 mod task;
 
 #[derive(Debug, Parser)]
@@ -16,8 +18,12 @@ pub struct Opts {
 
 #[derive(Debug, Parser)]
 pub enum SubCommand {
-    #[command(name = "down", about = "根据url进行多线程下载")]
+    #[command(name = "down", about = "将文件块写入到同一文件中")]
     Down(Args),
+    #[command(name = "channel-down", about = "使用channel同步处理进行排序")]
+    ChannelDown(Args),
+    #[command(name = "binary-heap-down", about = "使用最大堆对文件进行排序")]
+    BinaryHeapDown(Args),
 }
 
 #[derive(Parser, Debug)]
@@ -30,12 +36,22 @@ pub struct Args {
 async fn main() -> Result<(), anyhow::Error> {
     let opts = Opts::parse();
     match opts.cmd {
-        SubCommand::Down(opts) => {
+        SubCommand::Down(args) => {
             let manger = DownloadManager {};
 
-            manger.execute(&opts.url).await?;
+            manger.execute(&args.url).await?;
 
             println!("Download completed successfully!");
+        }
+        SubCommand::ChannelDown(args) => {
+            let manager = ChannelManager {};
+
+            manager.execute(&args.url).await?;
+
+            println!("Download completed successfully!");
+        }
+        SubCommand::BinaryHeapDown(args) => {
+            println!("{args:?}")
         }
     }
     Ok(())
