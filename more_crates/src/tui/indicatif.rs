@@ -10,7 +10,7 @@ pub fn base() {
 }
 #[cfg(test)]
 mod test_indicatif {
-    use crate::cui::indicatif::base;
+    use crate::tui::indicatif::base;
 
     #[test]
     fn test_base() {

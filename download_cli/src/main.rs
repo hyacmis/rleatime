@@ -5,6 +5,7 @@ use crate::manager::DownloadManager;
 mod chunk;
 mod helper;
 mod manager;
+mod task;
 
 #[derive(Debug, Parser)]
 #[command(name = "download_cli", version, author, about, long_about = None)]
@@ -30,9 +31,9 @@ async fn main() -> Result<(), anyhow::Error> {
     let opts = Opts::parse();
     match opts.cmd {
         SubCommand::Down(opts) => {
-            let manger = DownloadManager::new(&opts.url);
+            let manger = DownloadManager {};
 
-            manger.execute().await?;
+            manger.execute(&opts.url).await?;
 
             println!("Download completed successfully!");
         }

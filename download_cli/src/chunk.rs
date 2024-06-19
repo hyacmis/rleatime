@@ -4,17 +4,19 @@ use reqwest::{header::RANGE, Client};
 use url::Url;
 
 // 定义下载任务结构体
-#[derive(Clone)]
+#[derive(Debug, Clone)]
 pub struct TaskChunk {
     pub id: usize,
+    pub url: Url,
     pub start_byte: u64,
     pub end_byte: u64,
 }
 
 impl TaskChunk {
-    pub fn new(id: usize, start_byte: u64, end_byte: u64) -> Self {
+    pub fn new(id: usize, url: Url, start_byte: u64, end_byte: u64) -> Self {
         Self {
             id,
+            url,
             start_byte,
             end_byte,
         }
@@ -23,10 +25,10 @@ impl TaskChunk {
 
 impl TaskChunk {
     /// 区块下载函数
-    pub async fn download(&self, url: Url, pb: ProgressBar) -> Result<Vec<u8>, anyhow::Error> {
+    pub async fn download(&self, pb: ProgressBar) -> Result<Vec<u8>, anyhow::Error> {
         // 发送 GET 请求以下载文件的特定部分
         let response = Client::new()
-            .get(url.as_str())
+            .get(self.url.as_str())
             .header(
                 RANGE,
                 format!("bytes={}-{}", self.start_byte, self.end_byte),
