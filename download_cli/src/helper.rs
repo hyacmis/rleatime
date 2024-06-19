@@ -1,9 +1,9 @@
-#![allow(dead_code)]
-
 use anyhow::Error;
-use std::cmp::Reverse;
-use std::collections::BinaryHeap;
-use std::sync::{Arc, Mutex};
+use std::{
+    cmp::Reverse,
+    collections::BinaryHeap,
+    sync::{Arc, Mutex},
+};
 
 /// 使用二叉树对线程下载的文件块进行排序
 /// 用于排序的数据块包装器

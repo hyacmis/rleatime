@@ -1,11 +1,13 @@
 use clap::Parser;
 
 use crate::manager::DownloadManager;
+use crate::manager_binary_heap::BinaryHeapManager;
 use crate::manager_channel::ChannelManager;
 
 mod chunk;
 mod helper;
 mod manager;
+mod manager_binary_heap;
 mod manager_channel;
 mod task;
 
@@ -38,21 +40,17 @@ async fn main() -> Result<(), anyhow::Error> {
     match opts.cmd {
         SubCommand::Down(args) => {
             let manger = DownloadManager {};
-
             manger.execute(&args.url).await?;
-
-            println!("Download completed successfully!");
         }
         SubCommand::ChannelDown(args) => {
             let manager = ChannelManager {};
-
             manager.execute(&args.url).await?;
-
-            println!("Download completed successfully!");
         }
         SubCommand::BinaryHeapDown(args) => {
-            println!("{args:?}")
+            let manager = BinaryHeapManager {};
+            manager.execute(&args.url).await?;
         }
     }
+    println!("Download completed successfully!");
     Ok(())
 }
