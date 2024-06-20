@@ -5,8 +5,10 @@ use std::{
     sync::Mutex,
 };
 
+use crate::Args;
 use futures::future::try_join_all;
 use indicatif::ProgressBar;
+
 use tokio::{task, task::JoinHandle};
 
 use crate::chunk::TaskChunk;
@@ -94,8 +96,8 @@ impl DownloadManager {
         Ok(())
     }
 
-    pub async fn execute(&self, url: &str) -> Result<(), anyhow::Error> {
-        let mut task = Task::new(url).await?;
+    pub async fn execute(&self, args: Args) -> Result<(), anyhow::Error> {
+        let mut task = Task::new(&args).await?;
         let tasks = task.generate_chunk_tasks();
 
         let file = self.create_empty_file_with_size(&task.file_name_temp, task.length)?;

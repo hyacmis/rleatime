@@ -30,6 +30,8 @@ pub enum SubCommand {
 pub struct Args {
     #[arg(short, long)]
     url: String,
+    #[arg(short, long)]
+    output_path: Option<String>,
 }
 
 #[tokio::main]
@@ -38,15 +40,15 @@ async fn main() -> Result<(), anyhow::Error> {
     match opts.cmd {
         SubCommand::Down(args) => {
             let manger = DownloadManager {};
-            manger.execute(&args.url).await?;
+            manger.execute(args).await?;
         }
         SubCommand::ChannelDown(args) => {
             let manager = ChannelManager {};
-            manager.execute(&args.url).await?;
+            manager.execute(args).await?;
         }
         SubCommand::BinaryHeapDown(args) => {
             let manager = BinaryHeapManager {};
-            manager.execute(&args.url).await?;
+            manager.execute(args).await?;
         }
     }
     println!("Download completed successfully!");

@@ -1,5 +1,7 @@
 use std::env;
+use std::path::PathBuf;
 
+use crate::Args;
 use regex::Regex;
 use reqwest::header::{CONTENT_DISPOSITION, CONTENT_LENGTH};
 use reqwest::Client;
@@ -13,12 +15,11 @@ pub struct Task {
     pub length: u64,
     pub file_name_temp: String,
     pub file_name: String,
-    pub save_path: String,
 }
 
 impl Task {
-    pub async fn new(url_str: &str) -> Result<Task, anyhow::Error> {
-        let url = Url::parse(url_str).expect("这不是一个有效的url");
+    pub async fn new(args: &Args) -> Result<Task, anyhow::Error> {
+        let url = Url::parse(&args.url).expect("这不是一个有效的url");
         let client = Client::builder()
             .redirect(reqwest::redirect::Policy::default()) // 处理重定向的情况
             .build()?;
@@ -57,14 +58,19 @@ impl Task {
             }
         };
 
-        let path = env::current_dir().expect("获取当前路径失败");
+        let path = match &args.output_path {
+            None => env::current_dir().expect("获取当前路径失败"),
+            Some(path) => PathBuf::from(path),
+        };
+
+        let file_name_temp = path.join(format!("{name}.download"));
+        let file_name = path.join(name);
 
         Ok(Task {
             url,
             length,
-            file_name_temp: format!("{name}.download"),
-            file_name: name.to_string(),
-            save_path: path.to_string_lossy().to_string(),
+            file_name_temp: file_name_temp.to_string_lossy().to_string(),
+            file_name: file_name.to_string_lossy().to_string(),
         })
     }
 }
