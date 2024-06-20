@@ -1,9 +1,11 @@
-use crate::chunk::TaskChunk;
+use std::env;
+
 use regex::Regex;
 use reqwest::header::{CONTENT_DISPOSITION, CONTENT_LENGTH};
 use reqwest::Client;
-use std::env;
 use url::Url;
+
+use crate::chunk::TaskChunk;
 
 #[derive(Debug)]
 pub struct Task {
@@ -15,10 +17,13 @@ pub struct Task {
 }
 
 impl Task {
-    pub async fn new(url_str: &str) -> Task {
+    pub async fn new(url_str: &str) -> Result<Task, anyhow::Error> {
         let url = Url::parse(url_str).expect("这不是一个有效的url");
+        let client = Client::builder()
+            .redirect(reqwest::redirect::Policy::default()) // 处理重定向的情况
+            .build()?;
 
-        let response = Client::new()
+        let response = client
             .head(url.as_str())
             .send()
             .await
@@ -26,34 +31,41 @@ impl Task {
 
         let headers = response.headers();
 
-        let length = headers
-            .get(CONTENT_LENGTH)
-            .and_then(|x| x.to_str().ok())
-            .and_then(|x| x.parse::<u64>().ok())
-            .expect("从 header 中获取文件长度失败");
+        let length: u64 = match headers.get(CONTENT_LENGTH) {
+            None => {
+                panic!("从 header 中获取文件长度失败")
+            }
+            Some(len) => {
+                let len_str = len.to_str()?;
+                len_str.parse::<u64>()?
+            }
+        };
 
-        let content_disposition = headers
-            .get(CONTENT_DISPOSITION)
-            .and_then(|x| x.to_str().ok())
-            .expect("从 header 中获取文件名称失败");
+        let name: String = match headers.get(CONTENT_DISPOSITION) {
+            None => {
+                let file_name = url.path().split('/').last().unwrap_or("unknown");
+                file_name.to_string()
+            }
+            Some(s) => {
+                let disposition = s.to_str()?;
+                // 使用正则进行匹配
+                let re = Regex::new(r#"filename=["']?([^;"']+)["']?"#).unwrap();
 
-        // 使用正则进行匹配
-        let re = Regex::new(r#"filename=["']?([^;"']+)["']?"#).unwrap();
-
-        let name = re
-            .captures(content_disposition)
-            .and_then(|caps| caps.get(1).map(|m| m.as_str().to_string()))
-            .unwrap_or(content_disposition.to_string());
+                re.captures(disposition)
+                    .and_then(|caps| caps.get(1).map(|m| m.as_str().to_string()))
+                    .unwrap_or(disposition.to_string())
+            }
+        };
 
         let path = env::current_dir().expect("获取当前路径失败");
 
-        Task {
+        Ok(Task {
             url,
             length,
             file_name_temp: format!("{name}.download"),
             file_name: name.to_string(),
             save_path: path.to_string_lossy().to_string(),
-        }
+        })
     }
 }
 
@@ -69,11 +81,6 @@ impl Task {
 
         // 根据每个块的大小计算需要多少次下载
         let range = ((content_length as f64) / (chunk_size as f64)).ceil() as u64;
-
-        println!(
-            "content_length: {content_length}. {:6.3}",
-            content_length / 1024 / 1024
-        );
 
         for i in 0..range {
             let end_byte = if i == range - 1 {
@@ -91,8 +98,6 @@ impl Task {
 
             start_byte += chunk_size;
         }
-
-        println!("chunk totals: {}", tasks.len());
 
         tasks
     }

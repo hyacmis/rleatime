@@ -5,11 +5,12 @@ use std::{
     sync::Mutex,
 };
 
-use crate::chunk::TaskChunk;
 use futures::future::try_join_all;
-use indicatif::{MultiProgress, ProgressBar, ProgressStyle};
+use indicatif::ProgressBar;
 use tokio::{task, task::JoinHandle};
 
+use crate::chunk::TaskChunk;
+use crate::helper::get_pb;
 use crate::task::Task;
 
 #[derive(Clone)]
@@ -56,13 +57,7 @@ impl DownloadManager {
         tasks: Vec<TaskChunk>,
         file: File,
     ) -> Result<(), anyhow::Error> {
-        // TUI 的声明与显示配置
-        let m = MultiProgress::new();
-        let sty = ProgressStyle::default_bar()
-            .template("{prefix} [{bar:40.cyan/blue}] {bytes}/{total_bytes} ({eta}) {msg}")
-            .unwrap()
-            .progress_chars("#>-");
-
+        let (mp, sty) = get_pb();
         let mut handles: Vec<JoinHandle<Result<(), anyhow::Error>>> = vec![];
 
         // 使用Arc和Mutex以便在多个线程间共享和同步文件句柄
@@ -73,7 +68,7 @@ impl DownloadManager {
             let self_clone = self_ref.clone();
             let file_clone = file.clone();
 
-            let pb = m.add(ProgressBar::new(
+            let pb = mp.add(ProgressBar::new(
                 task_chunk.end_byte - task_chunk.start_byte,
             ));
             pb.set_style(sty.clone());
@@ -94,13 +89,13 @@ impl DownloadManager {
         try_join_all(handles).await?;
 
         // 清除所有进度条
-        m.clear().unwrap();
+        mp.clear().unwrap();
 
         Ok(())
     }
 
     pub async fn execute(&self, url: &str) -> Result<(), anyhow::Error> {
-        let mut task = Task::new(url).await;
+        let mut task = Task::new(url).await?;
         let tasks = task.generate_chunk_tasks();
 
         let file = self.create_empty_file_with_size(&task.file_name_temp, task.length)?;

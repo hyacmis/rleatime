@@ -1,4 +1,5 @@
 use anyhow::Error;
+use indicatif::{MultiProgress, ProgressStyle};
 use std::{
     cmp::Reverse,
     collections::BinaryHeap,
@@ -48,6 +49,16 @@ impl Handle for HeapSortWrapper {
         }
         Ok(data)
     }
+}
+
+pub fn get_pb() -> (MultiProgress, ProgressStyle) {
+    // TUI 的声明与显示配置
+    let mp = MultiProgress::new();
+    let sty = ProgressStyle::default_bar()
+        .template("{prefix} [{bar:40.cyan/blue}] {bytes}/{total_bytes} ({eta}) ({elapsed}) {msg}")
+        .unwrap()
+        .progress_chars("#>-");
+    (mp, sty)
 }
 
 #[test]

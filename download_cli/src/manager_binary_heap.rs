@@ -7,11 +7,11 @@ use std::{
 };
 
 use futures::future::try_join_all;
-use indicatif::{MultiProgress, ProgressBar, ProgressStyle};
+use indicatif::ProgressBar;
 use tokio::{task, task::JoinHandle};
 
 use crate::chunk::TaskChunk;
-use crate::helper::{Handle, HeapSortWrapper, SortWrapper};
+use crate::helper::{get_pb, Handle, HeapSortWrapper, SortWrapper};
 use crate::task::Task;
 
 pub struct BinaryHeapManager;
@@ -22,17 +22,12 @@ impl BinaryHeapManager {
         tasks: Vec<TaskChunk>,
         queue: HeapSortWrapper,
     ) -> Result<(), anyhow::Error> {
-        let m = MultiProgress::new();
-        let sty = ProgressStyle::default_bar()
-            .template("{prefix} [{bar:40.cyan/blue}] {bytes}/{total_bytes} ({eta}) {msg}")
-            .unwrap()
-            .progress_chars("#>-");
-
+        let (mp, sty) = get_pb();
         let mut handles: Vec<JoinHandle<Result<(), anyhow::Error>>> = vec![];
         for task in tasks {
             let queue_clone = queue.clone();
 
-            let pb = m.add(ProgressBar::new(task.end_byte - task.start_byte));
+            let pb = mp.add(ProgressBar::new(task.end_byte - task.start_byte));
             pb.set_style(sty.clone());
             pb.set_message(format!("chunk id {:02}", task.id));
 
@@ -47,6 +42,10 @@ impl BinaryHeapManager {
         }
         // 等待所有下载任务完成
         try_join_all(handles).await?;
+
+        // 清除所有进度条
+        mp.clear().unwrap();
+
         Ok(())
     }
 
@@ -57,7 +56,7 @@ impl BinaryHeapManager {
     }
 
     pub async fn execute(&self, url: &str) -> Result<(), anyhow::Error> {
-        let mut task = Task::new(url).await;
+        let mut task = Task::new(url).await?;
         let tasks = task.generate_chunk_tasks();
 
         let queue: HeapSortWrapper = Arc::new(Mutex::new(BinaryHeap::new()));
