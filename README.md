@@ -1,9 +1,9 @@
 # runtime
 
-学习 `rust` 语法的私有项目
+学习 `rust` 语法的项目
 使用 `RustRover` IDE
 
-## 基础
+## 语法
 
 - [x] `Vec`
 - [x] `HashMap`
@@ -11,20 +11,16 @@
 - [x] `Enum` 枚举
 - [x] Type to Type 类型转换
 - [x] iter 各种遍历操作
-
-## 进阶
-
 - [x] `static` 全局静态变量
-- [x] err 错误
+- [x] `Eeeor` 错误
 - [x] `T` 泛型
 - [x] `trait` 特征
-- [x] 高级语法
-    - [x] `thread` 多线程
-    - [x] thread of channel 线程通道
-    - [x] thread of lock 线程锁
-    - [x] thread of atomic 原子操作,内存顺序
-    - [ ] thread Send 和 Sync 线程安全
-    - [x] `Box` 智能指针
+- [ ] `thread` 多线程
+    - [x] `channel` 线程通道
+    - [x] `lock` 线程锁
+    - [x] `atomic` 原子操作,内存顺序
+    - [ ] `Send` 和 `Sync` 线程安全
+- [x] `Box` 智能指针
 
 ## 内部库
 
@@ -70,6 +66,10 @@
 
 ## demo
 
-- [x] snake [贪吃蛇项目](https://github.com/coufxr/snake.git)
-- [x] `slint` [betape](https://github.com/coufxr/betape.git)
+- [ ] snake
+    - [x] [demo](snake) 使用 `piston_window` 绘制
+    - [ ] [demo2](https://github.com/coufxr/snake.git) 使用 `slint` 绘制
+- [ ] `slint`
 - [x] `axum` [web-demo](https://github.com/coufxr/web-demo)
+- [x] 多线程下载 [download_cli](download_cli)
+- [ ] `clap` 实现一个demo
