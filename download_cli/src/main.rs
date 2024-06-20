@@ -1,14 +1,12 @@
 use clap::Parser;
 
-use crate::manager::DownloadManager;
-use crate::manager_binary_heap::BinaryHeapManager;
-use crate::manager_channel::ChannelManager;
+use manager::binary_heap::BinaryHeapManager;
+use manager::channel::ChannelManager;
+use manager::multi_seek::DownloadManager;
 
 mod chunk;
 mod helper;
 mod manager;
-mod manager_binary_heap;
-mod manager_channel;
 mod task;
 
 #[derive(Debug, Parser)]
