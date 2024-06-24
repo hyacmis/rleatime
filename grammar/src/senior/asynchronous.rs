@@ -28,7 +28,7 @@ async fn learn_and_sing() -> String {
     // 这里使用`.await`来等待学歌的完成，但是并不会阻塞当前线程，该线程在学歌的任务`.await`后，完全可以去执行跳舞的任务
     let song = learn_song().await;
 
-    // 唱歌必须要在学歌之后
+    // 唱歌必须在学歌之后
     sing_song(song).await
 }
 

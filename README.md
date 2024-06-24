@@ -5,9 +5,9 @@
 
 ## 语法
 
-- [x] `Vec`
-- [x] `HashMap`
-- [x] `struct` 结构体与impl
+- [x] `Vec` 动态数组
+- [x] `HashMap` 集合/字典
+- [x] `struct` 结构体与 `impl`
 - [x] `Enum` 枚举
 - [x] Type to Type 类型转换
 - [x] iter 各种遍历操作
@@ -15,12 +15,15 @@
 - [x] `Eeeor` 错误
 - [x] `T` 泛型
 - [x] `trait` 特征
+- [x] 智能指针
+    - [x] `Box`
+    - [X] `Rc` 和 `Arc` 引用计数
+    - [x] `Cell` 和 `RefCell`
 - [ ] `thread` 多线程
     - [x] `channel` 线程通道
     - [x] `lock` 线程锁
     - [x] `atomic` 原子操作,内存顺序
     - [ ] `Send` 和 `Sync` 线程安全
-- [x] `Box` 智能指针
 
 ## 内部库
 
