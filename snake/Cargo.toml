@@ -1,9 +1,10 @@
 [package]
 name = "snake"
-version = "0.1.0"
-edition = "2021"
-license = "MIT"
+version.workspace = true
+authors.workspace = true
+edition.workspace = true
+license.workspace = true
 
 [dependencies]
 piston_window = "0.132.0"
-rand = "0.8.5"
+rand.workspace = true

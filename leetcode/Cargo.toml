@@ -1,8 +1,10 @@
 [package]
 name = "leetcode"
-version = "0.1.0"
-edition = "2021"
 description = "LeetCode算法的学习"
-license = "MIT"
+version.workspace = true
+authors.workspace = true
+edition.workspace = true
+license.workspace = true
+
 
 [dependencies]
