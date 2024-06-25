@@ -1,8 +1,6 @@
 #![allow(dead_code)]
 
-use std::sync::{Arc, Mutex};
-
-use tokio::sync::Semaphore;
+use std::sync::Mutex;
 
 //死锁 锁与主线程的生命周期一样长
 fn lock_deadlock() {
@@ -21,44 +19,19 @@ fn lock_deadlock() {
     println!("m = {:?}", m);
 }
 
-/// Rc<T>/RefCell<T>用于单线程内部可变性
-/// Arc<T>/Mutex<T>用于多线程内部可变性
-static MUTEX1: Mutex<i64> = Mutex::new(0);
-static MUTEX2: Mutex<i64> = Mutex::new(0);
-
-#[tokio::main]
-async fn lock_semaphore() {
-    let semaphore = Arc::new(Semaphore::new(2));
-    let mut join_handles = Vec::new();
-
-    for i in 0..5 {
-        let permit = semaphore.clone().acquire_owned().await.unwrap();
-        join_handles.push(tokio::spawn(async move {
-            //
-            // 在这里执行任务...
-            //
-            println!("lock_semaphore:{i}");
-            drop(permit);
-        }));
-    }
-
-    for handle in join_handles {
-        handle.await.unwrap();
-    }
-}
-
 #[cfg(test)]
 mod test_lock {
-    use std::sync::{Condvar, MutexGuard, RwLock};
+    use std::sync::{Arc, Condvar, MutexGuard, RwLock};
     use std::thread;
     use std::thread::sleep;
     use std::time::Duration;
+    use tokio::sync::Semaphore;
 
     use super::*;
 
-    /// 互斥锁 Mutex
+    /// 互斥锁 Mutex 单线程中使用 Mutex
     #[test]
-    fn test_lock_mutex() {
+    fn test_single_threaded_mutex() {
         // 使用`Mutex`结构体的关联函数创建新的互斥锁实例
         let m = Mutex::new(5);
 
@@ -79,7 +52,7 @@ mod test_lock {
 
     /// 多线程中使用 Mutex
     #[test]
-    fn test_lock_thread() {
+    fn test_multithreading_thread() {
         // 通过`Arc`实现`Mutex`的多所有权
         // Arc<T> 它的内部计数器是多线程安全的，因此可以在多线程环境中使用
         let counter = Arc::new(Mutex::new(0));
@@ -107,7 +80,12 @@ mod test_lock {
 
     /// 多线程死锁
     #[test]
-    fn test_lock_thread_deadlock() {
+    fn test_multithreading_deadlock() {
+        /// Rc<T>/RefCell<T>用于单线程内部可变性
+        /// Arc<T>/Mutex<T>用于多线程内部可变性
+        static MUTEX1: Mutex<i64> = Mutex::new(0);
+        static MUTEX2: Mutex<i64> = Mutex::new(0);
+
         // 存放子线程的句柄
         let mut children = vec![];
         for i_thread in 0..2 {
@@ -134,9 +112,10 @@ mod test_lock {
 
                         println!("线程 {} 锁住了MUTEX2, 准备去锁MUTEX1", i_thread);
 
+                        sleep(Duration::from_millis(10));
+
                         // let _guard = MUTEX1.lock().unwrap();
 
-                        sleep(Duration::from_millis(10));
                         let guard = MUTEX1.try_lock();
                         println!("线程 {} 获取 MUTEX1 锁的结果: {:?}", i_thread, guard);
                     }
@@ -158,7 +137,7 @@ mod test_lock {
     /// 读和写不能同时存在
     /// 读可以使用read、try_read，写write、try_write, 在实际项目中，try_xxx会安全的多
     #[test]
-    fn test_lock_rwlock() {
+    fn test_rwlock() {
         let lock = RwLock::new(5);
 
         // 同一时间允许多个读
@@ -184,7 +163,7 @@ mod test_lock {
 
     /// 用条件变量(Condvar)控制线程的同步
     #[test]
-    fn test_lock_condvar() {
+    fn test_condvar() {
         let flag = Arc::new(Mutex::new(false));
         let cond = Arc::new(Condvar::new());
         let c_flag = flag.clone();
@@ -224,8 +203,24 @@ mod test_lock {
         assert!(*flag.lock().unwrap());
     }
 
-    #[test]
-    fn test_lock_semaphore() {
-        lock_semaphore()
+    #[tokio::test]
+    async fn test_lock_semaphore() {
+        let semaphore = Arc::new(Semaphore::new(2));
+        let mut join_handles = Vec::new();
+
+        for i in 0..5 {
+            let permit = semaphore.clone().acquire_owned().await.unwrap();
+            join_handles.push(tokio::spawn(async move {
+                //
+                // 在这里执行任务...
+                //
+                println!("lock_semaphore:{i}");
+                drop(permit);
+            }));
+        }
+
+        for handle in join_handles {
+            handle.await.unwrap();
+        }
     }
 }

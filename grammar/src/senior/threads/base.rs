@@ -1,7 +1,7 @@
 #[cfg(test)]
 mod test_thread {
     use std::cell::RefCell;
-    use std::sync::{Arc, Barrier, Condvar, Mutex};
+    use std::sync::{Arc, Barrier, Condvar, Mutex, Once};
     use std::thread;
     use std::time::Duration;
 
@@ -89,24 +89,51 @@ mod test_thread {
 
     ///条件变量(Condition Variables)经常和 Mutex 一起使用，可以让线程挂起，直到某个条件发生后再继续执行
     #[test]
-    fn test_mutex() {
+    fn test_condvar() {
         let pair = Arc::new((Mutex::new(false), Condvar::new()));
         let pair2 = pair.clone();
 
         thread::spawn(move || {
             let (lock, cvar) = &*pair2;
             let mut started = lock.lock().unwrap(); //子线程获取到锁
-            println!("changing started");
+            println!("sub thread waiting lock");
             *started = true;
+            println!("sub thread acquire lock");
             cvar.notify_one(); //通知主线程
         });
 
         let (lock, cvar) = &*pair;
         let mut started = lock.lock().unwrap();
         while !*started {
+            //如果没有获取到锁就一直等待获取锁
+            println!("main thread waiting lock");
             started = cvar.wait(started).unwrap(); //此处挂起等待子线程,并释放了锁started
+            println!("main thread acquire lock");
         }
+    }
 
-        println!("started changed");
+    #[test]
+    fn test_once() {
+        static mut VAL: usize = 0;
+        //保证全局变量只会被初始化一次，随后的其它线程调用就会忽略该函数
+        static INIT: Once = Once::new();
+
+        //call_once 执行初始化过程一次，并且只执行一次。
+        let handle1 = thread::spawn(move || {
+            INIT.call_once(|| unsafe {
+                VAL = 1;
+            });
+        });
+
+        let handle2 = thread::spawn(move || {
+            INIT.call_once(|| unsafe {
+                VAL = 2;
+            });
+        });
+
+        handle1.join().unwrap();
+        handle2.join().unwrap();
+        // val 的值取决于哪个线程先调用 INIT.call_once
+        println!("{}", unsafe { VAL });
     }
 }
