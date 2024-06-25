@@ -1,5 +1,6 @@
 #[cfg(test)]
 mod test_channel {
+    use std::collections::HashSet;
     use std::sync::mpsc;
     use std::sync::mpsc::{Receiver, Sender};
     use std::thread;
@@ -43,12 +44,7 @@ mod test_channel {
 
         //使用 for 进行循环接收
         thread::spawn(move || {
-            let vals = vec![
-                String::from("1"),
-                String::from("2"),
-                String::from("3"),
-                String::from("4"),
-            ];
+            let vals = vec![1, 2, 3, 4, 5];
 
             for val in vals {
                 tx.send(val).unwrap();
@@ -57,14 +53,14 @@ mod test_channel {
         });
         // 主线程和子线程是并发运行的
 
-        let mut f = "1".to_string();
+        let mut f = 1;
 
         for received in rx {
             // 此循环是阻塞的
             assert_eq!(received, f);
-            let a = f.parse::<u8>().unwrap();
-            f = (a + 1).to_string()
+            f += 1
         }
+        assert_eq!(f, 6);
     }
 
     /// 多发送者
@@ -72,6 +68,7 @@ mod test_channel {
     fn test_more_tx() {
         let (tx, rx) = mpsc::channel();
         let tx1 = tx.clone(); //子线程会拿走发送者的所有权,所以复制一份
+
         thread::spawn(move || {
             tx.send(String::from("hi from raw tx")).unwrap();
         });
@@ -79,6 +76,7 @@ mod test_channel {
         thread::spawn(move || {
             tx1.send(String::from("hi from cloned tx")).unwrap();
         });
+
         //输出顺序也不确定
         for received in rx {
             println!("Got: {}", received);
@@ -91,16 +89,18 @@ mod test_channel {
         let (tx, rx) = mpsc::channel();
 
         let handle = thread::spawn(move || {
-            println!("发送之前");
+            println!("async 发送之前");
             tx.send(1).unwrap();
-            println!("发送之后");
+            println!("async 发送之后");
         });
 
-        println!("睡眠之前");
+        println!("async 睡眠之前");
         thread::sleep(Duration::from_secs(3));
-        println!("睡眠之后");
+        println!("async 睡眠之后");
 
-        println!("receive {}", rx.recv().unwrap());
+        let r = rx.recv().unwrap();
+        println!("async receive {}", r);
+        assert_eq!(r, 1);
         handle.join().unwrap();
     }
 
@@ -110,18 +110,21 @@ mod test_channel {
         let (tx, rx) = mpsc::sync_channel(1);
 
         let handle = thread::spawn(move || {
-            println!("首次发送之前");
+            println!("sync 首次发送之前");
             tx.send(1).unwrap();
-            println!("首次发送之后");
+            println!("sync 首次发送之后");
             tx.send(1).unwrap();
-            println!("再次发送之后");
+            println!("sync 再次发送之后");
         });
 
-        println!("睡眠之前");
+        println!("sync 睡眠之前");
         thread::sleep(Duration::from_secs(3));
-        println!("睡眠之后");
+        println!("sync 睡眠之后");
 
-        println!("receive {}", rx.recv().unwrap());
+        let r = rx.recv().unwrap();
+
+        println!("sync receive {}", r);
+        assert_eq!(r, 1);
         handle.join().unwrap();
     }
 
@@ -142,8 +145,33 @@ mod test_channel {
             //recv 会一直等待channel传递的值
             match rx.recv().unwrap() {
                 Fruit::Apple(count) => println!("received {} apples", count),
-                Fruit::Orange(flavor) => println!("received {} oranges", flavor),
+                Fruit::Orange(flavor) => assert_eq!(flavor, "sweet".to_string()),
             }
         }
+    }
+
+    #[test]
+    fn test_trap() {
+        let (send, recv) = mpsc::channel();
+
+        for i in 0..3 {
+            let thread_send = send.clone();
+            thread::spawn(move || {
+                thread_send.send(i).unwrap();
+            });
+        }
+
+        //要结束for循环显然是要求发送者全部drop，但是由于send自身没有被drop，会导致该循环永远无法结束，最终主线程会一直阻塞
+        // 在这里drop send...
+        drop(send);
+
+        // 使用 set 接收
+        let mut set = HashSet::new();
+        for x in recv {
+            set.insert(x);
+        }
+
+        let res = [0, 1, 2].into_iter().collect::<HashSet<i32>>();
+        assert_eq!(set, res);
     }
 }

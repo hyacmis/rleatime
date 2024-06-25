@@ -19,11 +19,14 @@
     - [x] `Box`
     - [X] `Rc` 和 `Arc` 引用计数
     - [x] `Cell` 和 `RefCell`
-- [ ] `thread` 多线程
+- [x] 引用
+    - [x] `Weak` 弱引用
+    - [ ] `SelfRef` 自引用(?)
+- [x] `thread` 多线程
     - [x] `channel` 线程通道
     - [x] `lock` 线程锁
     - [x] `atomic` 原子操作,内存顺序
-    - [ ] `Send` 和 `Sync` 线程安全
+    - [x] `Send` 和 `Sync` 线程安全
 
 ## 内部库
 
