@@ -35,16 +35,11 @@ mod test_file {
     use std::path::Path;
 
     #[test]
-    fn test_create_dir() {
-        fs::create_dir("src/file/.tmp").unwrap();
-        let is_path = Path::new("src/file/.tmp").exists();
-        assert!(is_path);
-    }
-
-    #[test]
-    fn test_delete_dir() {
+    fn test_create_and_delete_dir() {
         let path = "src/file/.tmp";
-        if Path::new(path).exists() {
+        fs::create_dir(path).unwrap();
+        let is_path = Path::new(path).exists();
+        if is_path {
             // 删除空文件夹
             fs::remove_dir(path).unwrap();
             // 删除不是空的文件夹

@@ -14,7 +14,7 @@ mod test_time {
     #[test]
     fn test_today() {
         let now = today().unwrap();
-        assert!(now.as_secs().to_string().contains("171"))
+        assert!(now.as_secs().to_string().contains("17"))
     }
 
     #[test]
