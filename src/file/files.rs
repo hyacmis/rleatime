@@ -39,6 +39,7 @@ mod test_file {
         let path = "src/file/.tmp";
         fs::create_dir(path).unwrap();
         let is_path = Path::new(path).exists();
+        assert!(is_path);
         if is_path {
             // 删除空文件夹
             fs::remove_dir(path).unwrap();
@@ -60,9 +61,12 @@ mod test_file {
         ];
         let dir = fs::read_dir("src/file").unwrap();
         for f in dir {
-            let f = f.unwrap().file_name();
-            let name = f.to_str().unwrap();
-            assert!(file_names.contains(&name));
+            let f = f.unwrap();
+            if f.file_type().unwrap().is_file() {
+                let f_name = f.file_name();
+                let name = f_name.to_str().unwrap();
+                assert!(file_names.contains(&name));
+            };
         }
     }
     #[test]
