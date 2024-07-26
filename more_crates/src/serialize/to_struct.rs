@@ -65,4 +65,18 @@ mod test_to_struct {
 
         assert_eq!(info_person, res)
     }
+
+    #[test]
+    fn test_string() {
+        let str = String::from(r#"{"name":"嘿嘿","age":43,"pet_phrase":["哞哞","咩咩"]}"#);
+        let info = serde_json::from_str::<Person>(&str).unwrap();
+
+        let res = Person {
+            name: "嘿嘿".to_string(),
+            age: 43,
+            pet_phrase: vec!["哞哞".to_string(), "咩咩".to_string()],
+        };
+
+        assert_eq!(info, res)
+    }
 }
