@@ -31,7 +31,6 @@
 ## 内部库
 
 - [x] `fs` 文件读写
-    - [x] [`csv`](https://github.com/BurntSushi/rust-csv) （第三方）csv处理
 - [x] `log` 日志库规范
 - [x] `time` 时间库，提供基础的时间获取方法
 
@@ -64,11 +63,18 @@
 ### 配置管理
 
 - [x] [`dotenvy`](https://github.com/allan2/dotenvy)  `dotenv` 的分叉 此库从 .env 文件加载环境变量
-- [x] [`config`](https://github.com/mehcode/config-rs/tree/master)  用于 Rust 应用程序的分层配置系统
+- [x] [`config`](https://github.com/mehcode/config-rs)  用于 Rust 应用程序的分层配置系统
 
 ### 命令行
 
 - [ ] [`clap`](https://github.com/clap-rs/clap)  命令行参数解析器
+- [x] [`indicatif`](https://github.com/console-rs/indicatif)  进度条和微调器以及基本颜色支持
+
+### 文件读写
+
+- [x] [`csv`](https://github.com/BurntSushi/rust-csv) （第三方）csv处理
+- [ ] [`Excel`]() Excel 处理(.xls,.xlsx)
+- [ ] [`PDF`]() PDF 处理(.pdf)
 
 ## demo
 
@@ -78,4 +84,4 @@
 - [ ] `slint`
 - [x] `axum` [web-demo](https://github.com/coufxr/web-demo)
 - [x] 多线程下载 [download_cli](download_cli)
-- [ ] `clap` 实现一个demo
+- [x] `clap` [rcli](https://github.com/coufxr/rcli)
