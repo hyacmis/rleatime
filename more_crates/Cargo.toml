@@ -16,11 +16,11 @@ indicatif.workspace = true
 reqwest = { workspace = true, features = ["json"] }
 
 serde_repr = "0.1.19"
-strum_macros = "0.26.2"
+strum_macros = "0.26.4"
 strum = { version = "0.26.2", features = ["derive"] }
 tracing = "0.1.40"
 tracing-subscriber = "0.3.18"
 chrono = { version = "0.4.38", features = ["serde"] }
 dotenvy = "0.15.7"
 config = "0.14.0"
-thiserror = "1.0.61"
+thiserror = "1.0.63"
