@@ -9,7 +9,7 @@ license.workspace = true
 [dependencies]
 serde.workspace = true
 serde_json.workspace = true
-tokio.workspace = true
+tokio = { workspace = true, features = ["rt-multi-thread"] }
 anyhow.workspace = true
 url.workspace = true
 indicatif.workspace = true
@@ -19,7 +19,9 @@ serde_repr = "0.1.19"
 strum_macros = "0.26.4"
 strum = { version = "0.26.2", features = ["derive"] }
 tracing = "0.1.40"
-tracing-subscriber = "0.3.18"
+tracing-subscriber = { version = "0.3.18", features = ["json"] }
+tracing-test = "0.2.5"
+tracing-appender = "0.2.3"
 chrono = { version = "0.4.38", features = ["serde"] }
 dotenvy = "0.15.7"
 config = "0.14.0"
